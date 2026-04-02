@@ -1,707 +1,516 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Esposito Digital — Websites. Apps. Automations.</title>
-  <meta name="description" content="Digital solutions built for businesses that move fast. Websites, web apps, and AI automations by Esposito Digital, based in Wales, UK.">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              bg: '#0A0A0A',
-              surface: '#111111',
-              elevated: '#1A1A1A',
-              accent: '#3B82F6',
-              'accent-hover': '#2563EB',
-              text: '#F5F5F5',
-              muted: '#9CA3AF',
-              glow: 'rgba(59, 130, 246, 0.15)',
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zak Esposito — Developer, Builder & Problem Solver</title>
+    <meta name="description" content="I help businesses get online and run smarter. Modern websites, web apps, and AI-powered automations.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FAFAFA',
+                            surface: '#FFFFFF',
+                            dark: '#0A0A0A',
+                            accent: '#10B981',
+                            'accent-hover': '#059669',
+                            secondary: '#6366F1',
+                            text: '#111827',
+                            muted: '#6B7280',
+                            light: '#F5F5F5',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Outfit', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif'],
+                    }
+                }
             }
-          },
-          fontFamily: {
-            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
-            body: ['"DM Sans"', 'sans-serif'],
-          },
         }
-      }
-    }
-  </script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { font-family: 'DM Sans', sans-serif; }
-    body { background: #0A0A0A; color: #F5F5F5; margin: 0; overflow-x: hidden; }
+    </script>
+    <style>
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { font-family: 'DM Sans', sans-serif; background: #FAFAFA; color: #111827; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; letter-spacing: -0.03em; }
+        p, li, span, a, label, input, textarea { line-height: 1.7; }
 
-    /* Grain texture overlay */
-    .grain-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.04;
-    }
+        /* Grain texture overlay */
+        .grain::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
 
-    /* Scroll reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    /* Spring hover for cards */
-    .card-hover {
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-    }
-    .card-hover:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 40px rgba(59, 130, 246, 0.12), 0 4px 16px rgba(0, 0, 0, 0.4);
-      border-color: rgba(59, 130, 246, 0.3) !important;
-    }
+        /* Button hover spring */
+        .btn-spring {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .btn-spring:hover {
+            transform: translateY(-2px);
+        }
+        .btn-spring:active {
+            transform: translateY(0px);
+        }
 
-    /* Button spring */
-    .btn-spring {
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, background-color 0.2s ease, border-color 0.2s ease;
-    }
-    .btn-spring:hover { transform: translateY(-2px); }
-    .btn-spring:active { transform: translateY(0); }
+        /* Card hover */
+        .card-lift {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+        .card-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
+        }
 
-    /* Focus visible ring */
-    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
-      outline: 2px solid #3B82F6;
-      outline-offset: 2px;
-    }
+        /* Nav link underline */
+        .nav-link {
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #10B981;
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: #10B981; }
 
-    /* Nav scroll state */
-    .nav-scrolled {
-      background: rgba(10, 10, 10, 0.92) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
-      border-bottom: 1px solid rgba(59, 130, 246, 0.08);
-    }
+        /* Green highlight */
+        .green-highlight {
+            background: linear-gradient(120deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.25) 100%);
+            padding: 0 0.15em;
+            border-radius: 4px;
+            color: #059669;
+        }
 
-    /* Pulse animation for scroll indicator */
-    @keyframes gentleBounce {
-      0%, 100% { opacity: 0.5; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(6px); }
-    }
-    .scroll-indicator { animation: gentleBounce 2.5s ease-in-out infinite; }
+        /* Photo shape — bold angular shape matching Rulian's purple triangle */
+        .photo-shape {
+            position: relative;
+        }
+        .photo-shape::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 105%;
+            height: 105%;
+            background: linear-gradient(135deg, #6366F1 0%, #818CF8 40%, #A5B4FC 100%);
+            clip-path: polygon(25% 0%, 100% 0%, 100% 75%, 75% 100%, 0% 100%, 0% 25%);
+            z-index: 0;
+        }
+        .photo-shape::after {
+            content: '';
+            position: absolute;
+            top: -36px;
+            right: -36px;
+            width: 112%;
+            height: 112%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(129, 140, 248, 0.08) 100%);
+            clip-path: polygon(25% 0%, 100% 0%, 100% 75%, 75% 100%, 0% 100%, 0% 25%);
+            z-index: -1;
+        }
 
-    /* Hero gradient orbs — boosted ~20% opacity */
-    .hero-glow-1 {
-      position: absolute;
-      top: -15%;
-      right: -10%;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.20) 0%, rgba(59, 130, 246, 0.07) 40%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .hero-glow-2 {
-      position: absolute;
-      bottom: -20%;
-      left: -15%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .hero-glow-3 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 900px;
-      height: 500px;
-      background: radial-gradient(ellipse, rgba(59, 130, 246, 0.09) 0%, transparent 60%);
-      pointer-events: none;
-    }
+        /* Contain shape overflow on mobile */
+        @media (max-width: 767px) {
+            .hero-photo-wrap {
+                overflow: visible;
+                display: flex;
+                justify-content: center;
+                padding: 2rem 1.5rem;
+            }
+            .photo-shape::before {
+                top: -14px;
+                right: -14px;
+                width: 104%;
+                height: 104%;
+            }
+            .photo-shape::after {
+                top: -24px;
+                right: -24px;
+                width: 108%;
+                height: 108%;
+            }
+        }
 
-    /* Hero grid pattern */
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
-      -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
-      pointer-events: none;
-    }
+        /* Tech label colors — boosted opacity for dark bg readability */
+        .tech-react { background: rgba(97, 218, 251, 0.2); color: #67E8F9; border: 1px solid rgba(97, 218, 251, 0.25); }
+        .tech-typescript { background: rgba(49, 120, 198, 0.2); color: #60A5FA; border: 1px solid rgba(49, 120, 198, 0.25); }
+        .tech-csharp { background: rgba(155, 93, 229, 0.2); color: #C084FC; border: 1px solid rgba(155, 93, 229, 0.25); }
+        .tech-node { background: rgba(51, 153, 51, 0.2); color: #4ADE80; border: 1px solid rgba(51, 153, 51, 0.25); }
+        .tech-python { background: rgba(55, 118, 171, 0.2); color: #93C5FD; border: 1px solid rgba(55, 118, 171, 0.25); }
+        .tech-tailwind { background: rgba(6, 182, 212, 0.2); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.25); }
+        .tech-ai { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.25); }
+        .tech-gemini { background: rgba(251, 188, 4, 0.2); color: #FBBF24; border: 1px solid rgba(251, 188, 4, 0.25); }
+        .tech-design { background: rgba(244, 114, 182, 0.2); color: #F472B6; border: 1px solid rgba(244, 114, 182, 0.25); }
 
-    /* Input focus transition */
-    input, textarea {
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    input:focus, textarea:focus {
-      border-color: #3B82F6 !important;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-    }
+        /* Light-bg variant for project cards */
+        .light .tech-react, .card-light .tech-react { background: rgba(97, 218, 251, 0.12); color: #0891B2; border-color: rgba(97, 218, 251, 0.2); }
+        .card-light .tech-typescript { background: rgba(49, 120, 198, 0.12); color: #2563EB; border-color: rgba(49, 120, 198, 0.2); }
+        .card-light .tech-gemini { background: rgba(251, 188, 4, 0.12); color: #B45309; border-color: rgba(251, 188, 4, 0.2); }
+        .card-light .tech-ai { background: rgba(16, 185, 129, 0.12); color: #059669; border-color: rgba(16, 185, 129, 0.2); }
+        .card-light .tech-design { background: rgba(244, 114, 182, 0.12); color: #DB2777; border-color: rgba(244, 114, 182, 0.2); }
+        .card-light .tech-tailwind { background: rgba(6, 182, 212, 0.12); color: #0891B2; border-color: rgba(6, 182, 212, 0.2); }
 
-    /* Mobile menu */
-    .mobile-menu {
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .mobile-menu.open {
-      transform: translateX(0);
-    }
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu.open {
+            transform: translateY(0);
+        }
 
-    /* Nav links hover underline */
-    .nav-link {
-      position: relative;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #3B82F6;
-      transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .nav-link:hover::after {
-      width: 100%;
-    }
+        /* Focus visible */
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+            outline: 2px solid #10B981;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
 
-    /* Coming soon badge pulse */
-    .badge-glow {
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
-    }
+        /* Form inputs */
+        .form-input {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-input:focus {
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
 
-    /* Section separator */
-    .section-sep {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15) 30%, rgba(59, 130, 246, 0.15) 70%, transparent);
-    }
-
-    /* About image shimmer */
-    .about-img-container::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 1rem;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), transparent 40%, transparent 60%, rgba(59, 130, 246, 0.1));
-      z-index: -1;
-    }
-
-    /* Service card gradient border on hover */
-    .service-card {
-      position: relative;
-    }
-    .service-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 1rem;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.0), rgba(59, 130, 246, 0.0));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      transition: background 0.4s ease;
-      pointer-events: none;
-    }
-    .service-card:hover::before {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(59, 130, 246, 0.05) 50%, rgba(59, 130, 246, 0.2));
-    }
-
-    /* Service icon glow */
-    .service-icon {
-      position: relative;
-    }
-    .service-icon::after {
-      content: '';
-      position: absolute;
-      inset: -6px;
-      border-radius: 16px;
-      background: rgba(59, 130, 246, 0.10);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .service-card:hover .service-icon::after {
-      opacity: 1;
-    }
-  </style>
+        /* Navbar scroll */
+        .navbar-scrolled {
+            background: rgba(250, 250, 250, 0.85) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+    </style>
 </head>
-<body class="font-body antialiased">
+<body class="grain">
 
-  <!-- SVG Grain Filter -->
-  <svg class="grain-overlay" xmlns="http://www.w3.org/2000/svg">
-    <filter id="grain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
-      <feColorMatrix type="saturate" values="0"/>
-    </filter>
-    <rect width="100%" height="100%" filter="url(#grain)"/>
-  </svg>
-
-  <!-- ========== NAVIGATION ========== -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: transparent;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16 lg:h-20">
-      <!-- Wordmark -->
-      <a href="#" class="font-heading font-bold text-brand-text text-lg tracking-tight" style="letter-spacing: -0.02em;">
-        ESPOSITO<span class="text-brand-accent">.</span>DIGITAL
-      </a>
-
-      <!-- Desktop links -->
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#services" class="nav-link text-brand-muted hover:text-brand-text text-sm font-body font-medium transition-colors duration-200">Services</a>
-        <a href="#about" class="nav-link text-brand-muted hover:text-brand-text text-sm font-body font-medium transition-colors duration-200">About</a>
-        <a href="#portfolio" class="nav-link text-brand-muted hover:text-brand-text text-sm font-body font-medium transition-colors duration-200">Portfolio</a>
-        <a href="#contact" class="nav-link text-brand-muted hover:text-brand-text text-sm font-body font-medium transition-colors duration-200">Contact</a>
-        <a href="#contact" class="btn-spring inline-flex items-center px-5 py-2.5 rounded-lg bg-brand-accent hover:bg-brand-accent-hover text-white text-sm font-heading font-semibold" style="box-shadow: 0 4px 16px rgba(59,130,246,0.25);">
-          Start a Project
-        </a>
-      </div>
-
-      <!-- Mobile hamburger -->
-      <button id="menuBtn" class="md:hidden flex flex-col gap-1.5 p-2 -mr-2" aria-label="Open menu">
-        <span class="block w-6 h-0.5 bg-brand-text transition-transform duration-300" id="bar1"></span>
-        <span class="block w-6 h-0.5 bg-brand-text transition-opacity duration-300" id="bar2"></span>
-        <span class="block w-6 h-0.5 bg-brand-text transition-transform duration-300" id="bar3"></span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- Mobile menu overlay -->
-  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-brand-bg flex flex-col items-center justify-center gap-8 md:hidden">
-    <a href="#services" class="text-2xl font-heading font-bold text-brand-text mobile-nav-link">Services</a>
-    <a href="#about" class="text-2xl font-heading font-bold text-brand-text mobile-nav-link">About</a>
-    <a href="#portfolio" class="text-2xl font-heading font-bold text-brand-text mobile-nav-link">Portfolio</a>
-    <a href="#contact" class="text-2xl font-heading font-bold text-brand-text mobile-nav-link">Contact</a>
-    <a href="#contact" class="btn-spring mt-4 inline-flex items-center px-8 py-3 rounded-lg bg-brand-accent text-white font-heading font-semibold mobile-nav-link">Start a Project</a>
-  </div>
-
-  <!-- ========== HERO ========== -->
-  <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pb-16 overflow-hidden">
-    <!-- Background effects -->
-    <div class="hero-grid"></div>
-    <div class="hero-glow-1"></div>
-    <div class="hero-glow-2"></div>
-    <div class="hero-glow-3"></div>
-
-    <div class="relative z-10 text-center max-w-3xl mx-auto">
-      <!-- Small label above heading -->
-      <div class="reveal mb-6">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-heading font-semibold text-brand-accent border border-brand-accent/20" style="background: rgba(59,130,246,0.06);">
-          <span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
-          Based in Wales, UK
-        </span>
-      </div>
-
-      <h1 class="reveal font-heading font-extrabold text-brand-text text-4xl sm:text-5xl lg:text-6xl leading-tight" style="letter-spacing: -0.03em; line-height: 1.05;">
-        Websites, apps and automations built to actually move your business forward.
-      </h1>
-      <p class="reveal mt-6 text-brand-muted text-lg sm:text-xl max-w-2xl mx-auto" style="line-height: 1.7;">
-        I build modern websites, internal tools and AI-powered workflows for businesses that want better systems, a stronger online presence, and less wasted time.
-      </p>
-      <div class="reveal mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-        <a href="#services" class="btn-spring w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-brand-accent hover:bg-brand-accent-hover text-white font-heading font-semibold text-base" style="box-shadow: 0 4px 20px rgba(59,130,246,0.25);">
-          View Services
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
-        </a>
-        <a href="#contact" class="btn-spring w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-lg border border-brand-elevated hover:border-brand-accent/40 text-brand-text hover:text-brand-accent font-heading font-semibold text-base" style="background: rgba(17,17,17,0.6);">
-          Start a Project
-        </a>
-      </div>
-      <p class="reveal mt-6 text-brand-muted/70 text-sm max-w-lg mx-auto" style="line-height: 1.6;">
-        Built by Zak Esposito — CS student at Cardiff University, software engineer, and founder of Esposito Digital.
-      </p>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5v14M19 12l-7 7-7-7"/>
-      </svg>
-    </div>
-  </section>
-
-  <!-- ========== SERVICES ========== -->
-  <section id="services" class="py-24 sm:py-32 px-6 relative">
-    <!-- Subtle top separator -->
-    <div class="section-sep absolute top-0 left-6 right-6"></div>
-
-    <div class="max-w-7xl mx-auto">
-      <!-- Section heading -->
-      <div class="text-center mb-16">
-        <span class="reveal inline-block text-brand-accent text-xs font-heading font-semibold uppercase tracking-widest mb-4">Services</span>
-        <h2 class="reveal font-heading font-bold text-brand-text text-3xl sm:text-4xl lg:text-5xl" style="letter-spacing: -0.03em;">What We Do</h2>
-        <p class="reveal mt-4 text-brand-muted text-lg max-w-lg mx-auto" style="line-height: 1.7;">Everything your business needs to thrive online.</p>
-      </div>
-
-      <!-- Cards grid -->
-      <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
-        <!-- Websites -->
-        <div class="reveal service-card card-hover rounded-2xl p-8 lg:p-10 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-xl mb-3">Websites</h3>
-          <p class="text-brand-muted text-base" style="line-height: 1.7;">Modern, responsive websites designed to make your business look professional and convert attention into enquiries.</p>
-        </div>
-
-        <!-- Web Applications -->
-        <div class="reveal reveal-delay-1 service-card card-hover rounded-2xl p-8 lg:p-10 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-xl mb-3">Web Applications</h3>
-          <p class="text-brand-muted text-base" style="line-height: 1.7;">Custom dashboards, portals and tools built around your workflow, not forced into a generic template.</p>
-        </div>
-
-        <!-- AI Automations -->
-        <div class="reveal reveal-delay-2 service-card card-hover rounded-2xl p-8 lg:p-10 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-xl mb-3">AI Workflows & Automations</h3>
-          <p class="text-brand-muted text-base" style="line-height: 1.7;">Practical automations and AI-enhanced systems that reduce repetitive tasks and save time where it actually matters.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== WHY WORK WITH ME ========== -->
-  <section id="why" class="py-24 sm:py-32 px-6 relative" style="background: #0E0E10;">
-    <div class="section-sep absolute top-0 left-6 right-6"></div>
-
-    <div class="max-w-7xl mx-auto">
-      <!-- Section heading -->
-      <div class="text-center mb-16">
-        <span class="reveal inline-block text-brand-accent text-xs font-heading font-semibold uppercase tracking-widest mb-4">Why Me</span>
-        <h2 class="reveal font-heading font-bold text-brand-text text-3xl sm:text-4xl lg:text-5xl" style="letter-spacing: -0.03em;">Why Work With Me?</h2>
-      </div>
-
-      <!-- 4-card grid -->
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="reveal service-card card-hover rounded-2xl p-8 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-lg mb-3">Modern by Default</h3>
-          <p class="text-brand-muted text-sm" style="line-height: 1.7;">No outdated layouts or clunky builds. Everything is fast, mobile-first, and built with current tools.</p>
-        </div>
-
-        <div class="reveal reveal-delay-1 service-card card-hover rounded-2xl p-8 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-lg mb-3">Built Properly</h3>
-          <p class="text-brand-muted text-sm" style="line-height: 1.7;">Real development and engineering thinking, not surface-level design dragged together in a page builder.</p>
-        </div>
-
-        <div class="reveal reveal-delay-2 service-card card-hover rounded-2xl p-8 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-lg mb-3">Direct and Personal</h3>
-          <p class="text-brand-muted text-sm" style="line-height: 1.7;">You work directly with me from start to finish. No account managers, no agency runaround.</p>
-        </div>
-
-        <div class="reveal reveal-delay-3 service-card card-hover rounded-2xl p-8 border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="service-icon relative w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background: rgba(59,130,246,0.1);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <h3 class="font-heading font-bold text-brand-text text-lg mb-3">Focused on Outcomes</h3>
-          <p class="text-brand-muted text-sm" style="line-height: 1.7;">Better websites, smoother workflows, less admin. Everything I build is designed to save you time or make you money.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== ABOUT ========== -->
-  <section id="about" class="py-24 sm:py-32 px-6 relative">
-    <div class="section-sep absolute top-0 left-6 right-6"></div>
-
-    <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <!-- Image -->
-        <div class="reveal about-img-container relative rounded-2xl overflow-hidden" style="aspect-ratio: 5/6;">
-          <img src="https://placehold.co/500x600" alt="About Esposito Digital" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-          <div class="absolute inset-0" style="background: rgba(59,130,246,0.08); mix-blend-mode: multiply;"></div>
-          <!-- Corner accent -->
-          <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg" style="background: rgba(10,10,10,0.7); backdrop-filter: blur(8px);">
-              <div class="w-6 h-0.5 rounded-full bg-brand-accent"></div>
-              <span class="text-xs font-heading font-semibold text-brand-accent uppercase tracking-widest">Founder & Developer</span>
+    <!-- ============ NAV ============ -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50" style="background: #FAFAFA;">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="font-heading text-2xl tracking-tight" style="color: #111827; font-weight: 800;">
+                Z.E
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="nav-link font-body text-sm" style="color: #6B7280;">About</a>
+                <a href="#work" class="nav-link font-body text-sm" style="color: #6B7280;">My Work</a>
+                <a href="#contact" class="nav-link font-body text-sm" style="color: #6B7280;">Contact</a>
+                <a href="#contact" class="btn-spring inline-flex items-center px-5 py-2.5 rounded-full text-sm font-medium text-white" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+                    Get in Touch
+                </a>
             </div>
-          </div>
-        </div>
-
-        <!-- Text -->
-        <div class="reveal">
-          <span class="inline-block text-brand-accent text-xs font-heading font-semibold uppercase tracking-widest mb-4">About</span>
-          <h2 class="font-heading font-bold text-brand-text text-3xl sm:text-4xl mb-6" style="letter-spacing: -0.03em;">Built by Zak,<br>based in Wales</h2>
-          <div class="space-y-4 text-brand-muted text-base" style="line-height: 1.7;">
-            <p>I'm Zak Esposito — a final-year Computer Science student at Cardiff University and founder of Esposito Digital. I build modern websites, web apps and AI-powered automations for businesses that want something more capable and more personal than a generic agency build.</p>
-            <p>I've spent a year as a software engineer at Renishaw, building production-grade tools used on real manufacturing lines. Alongside that, I've built AI-powered apps like Snap2Shop (product identification using Gemini AI) and VentureForge (an R&D lab for founders). I work with React, TypeScript, C#, Node.js and modern AI tooling daily.</p>
-            <p>I care about clean design, strong performance, and software that actually solves problems — not just looks good in a demo.</p>
-          </div>
-          <div class="mt-8 flex items-center gap-4">
-            <div class="w-16 h-1 rounded-full bg-brand-accent"></div>
-            <span class="text-sm text-brand-muted font-heading">Est. 2026</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== PORTFOLIO ========== -->
-  <section id="portfolio" class="py-24 sm:py-32 px-6 relative">
-    <div class="section-sep absolute top-0 left-6 right-6"></div>
-
-    <div class="max-w-7xl mx-auto">
-      <!-- Section heading -->
-      <div class="text-center mb-16">
-        <span class="reveal inline-block text-brand-accent text-xs font-heading font-semibold uppercase tracking-widest mb-4">Portfolio</span>
-        <h2 class="reveal font-heading font-bold text-brand-text text-3xl sm:text-4xl lg:text-5xl" style="letter-spacing: -0.03em;">Selected Projects</h2>
-        <p class="reveal mt-4 text-brand-muted text-lg max-w-lg mx-auto" style="line-height: 1.7;">A few things I've built recently.</p>
-      </div>
-
-      <!-- Portfolio cards grid -->
-      <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
-        <!-- Snap2Shop -->
-        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="relative" style="aspect-ratio: 16/10;">
-            <img src="https://placehold.co/640x400/1A1A2E/3B82F6?text=Snap2Shop" alt="Snap2Shop project" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute inset-0" style="background: rgba(59,130,246,0.06); mix-blend-mode: multiply;"></div>
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading font-bold text-brand-text text-lg mb-2">Snap2Shop</h3>
-            <p class="text-brand-muted text-sm mb-4" style="line-height: 1.6;">AI-powered web app that identifies products from photos and finds real retailer links instantly. Built with React, TypeScript, and a multi-stage Gemini AI pipeline.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="text-xs px-2.5 py-1 rounded-md font-medium text-brand-accent border border-brand-accent/20" style="background: rgba(59,130,246,0.08);">AI / Full-Stack</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- VentureForge -->
-        <div class="reveal reveal-delay-1 card-hover rounded-2xl overflow-hidden border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="relative" style="aspect-ratio: 16/10;">
-            <img src="https://placehold.co/640x400/1A1A2E/3B82F6?text=VentureForge" alt="VentureForge project" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute inset-0" style="background: rgba(59,130,246,0.06); mix-blend-mode: multiply;"></div>
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading font-bold text-brand-text text-lg mb-2">VentureForge</h3>
-            <p class="text-brand-muted text-sm mb-4" style="line-height: 1.6;">An AI-powered R&D lab for solo founders — stateful product analysis with structured workflows and local persistence.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="text-xs px-2.5 py-1 rounded-md font-medium text-brand-accent border border-brand-accent/20" style="background: rgba(59,130,246,0.08);">AI / Product</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bakehouse 72 -->
-        <div class="reveal reveal-delay-2 card-hover rounded-2xl overflow-hidden border" style="background: #111111; border-color: rgba(26,26,26,0.8);">
-          <div class="relative" style="aspect-ratio: 16/10;">
-            <img src="https://placehold.co/640x400/1A1A2E/3B82F6?text=Bakehouse+72" alt="Bakehouse 72 Concept project" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute inset-0" style="background: rgba(59,130,246,0.06); mix-blend-mode: multiply;"></div>
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading font-bold text-brand-text text-lg mb-2">Bakehouse 72 Concept</h3>
-            <p class="text-brand-muted text-sm mb-4" style="line-height: 1.6;">A modern website concept for a local Welsh bakery, designed to show how a small business can elevate its online presence.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="text-xs px-2.5 py-1 rounded-md font-medium text-brand-accent border border-brand-accent/20" style="background: rgba(59,130,246,0.08);">Web Design</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== CONTACT ========== -->
-  <section id="contact" class="py-24 sm:py-32 px-6 relative" style="background: #0E0E10;">
-    <div class="section-sep absolute top-0 left-6 right-6"></div>
-
-    <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
-        <!-- Left: Text -->
-        <div class="reveal">
-          <span class="inline-block text-brand-accent text-xs font-heading font-semibold uppercase tracking-widest mb-4">Contact</span>
-          <h2 class="font-heading font-bold text-brand-text text-3xl sm:text-4xl lg:text-5xl mb-6" style="letter-spacing: -0.03em;">Need a better website, a smarter workflow, or a custom tool?</h2>
-          <p class="text-brand-muted text-lg mb-8" style="line-height: 1.7;">Let's talk about what you need and whether I'm the right fit.</p>
-
-          <div class="space-y-4">
-            <div class="flex items-center gap-3 text-brand-muted">
-              <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59,130,246,0.1);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                </svg>
-              </div>
-              <a href="mailto:hello@espositodigital.co.uk" class="text-brand-text hover:text-brand-accent transition-colors duration-200 font-medium">hello@espositodigital.co.uk</a>
-            </div>
-            <div class="flex items-center gap-3 text-brand-muted">
-              <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(59,130,246,0.1);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <span class="text-brand-muted">Wales, United Kingdom</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Form -->
-        <div class="reveal">
-          <form class="space-y-5 rounded-2xl p-8" style="background: #111111; border: 1px solid rgba(26,26,26,0.8);" onsubmit="event.preventDefault();">
-            <div>
-              <label for="name" class="block text-sm font-medium text-brand-muted mb-2 font-heading">Name</label>
-              <input type="text" id="name" name="name" placeholder="Your name" class="w-full px-4 py-3 rounded-lg text-brand-text placeholder-brand-muted/40 font-body text-base outline-none" style="background: #0A0A0A; border: 1px solid #1A1A1A;">
-            </div>
-            <div>
-              <label for="email" class="block text-sm font-medium text-brand-muted mb-2 font-heading">Email</label>
-              <input type="email" id="email" name="email" placeholder="you@example.com" class="w-full px-4 py-3 rounded-lg text-brand-text placeholder-brand-muted/40 font-body text-base outline-none" style="background: #0A0A0A; border: 1px solid #1A1A1A;">
-            </div>
-            <div>
-              <label for="message" class="block text-sm font-medium text-brand-muted mb-2 font-heading">Message</label>
-              <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." class="w-full px-4 py-3 rounded-lg text-brand-text placeholder-brand-muted/40 font-body text-base outline-none resize-none" style="background: #0A0A0A; border: 1px solid #1A1A1A;"></textarea>
-            </div>
-            <button type="submit" class="btn-spring w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-brand-accent hover:bg-brand-accent-hover text-white font-heading font-semibold text-base" style="box-shadow: 0 4px 20px rgba(59,130,246,0.25);">
-              Send Message
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <!-- Mobile hamburger -->
+            <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-6 h-0.5 bg-gray-800" style="transition: transform 0.3s ease;" id="bar1"></span>
+                <span class="block w-6 h-0.5 bg-gray-800" style="transition: opacity 0.3s ease;" id="bar2"></span>
+                <span class="block w-6 h-0.5 bg-gray-800" style="transition: transform 0.3s ease;" id="bar3"></span>
             </button>
-          </form>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== FOOTER ========== -->
-  <footer class="py-12 px-6 relative">
-    <div class="section-sep absolute top-0 left-6 right-6"></div>
-
-    <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-        <!-- Wordmark -->
-        <a href="#" class="font-heading font-bold text-brand-text text-lg" style="letter-spacing: -0.02em;">
-          ESPOSITO<span class="text-brand-accent">.</span>DIGITAL
-        </a>
-
-        <!-- Nav links -->
-        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          <a href="#services" class="text-brand-muted hover:text-brand-text text-sm font-body transition-colors duration-200">Services</a>
-          <a href="#about" class="text-brand-muted hover:text-brand-text text-sm font-body transition-colors duration-200">About</a>
-          <a href="#portfolio" class="text-brand-muted hover:text-brand-text text-sm font-body transition-colors duration-200">Portfolio</a>
-          <a href="#contact" class="text-brand-muted hover:text-brand-text text-sm font-body transition-colors duration-200">Contact</a>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-[64px] left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-100 px-6 py-6 flex flex-col gap-4">
+            <a href="#about" class="font-body text-base" style="color: #6B7280;" onclick="closeMobileMenu()">About</a>
+            <a href="#work" class="font-body text-base" style="color: #6B7280;" onclick="closeMobileMenu()">My Work</a>
+            <a href="#contact" class="font-body text-base" style="color: #6B7280;" onclick="closeMobileMenu()">Contact</a>
+            <a href="#contact" class="btn-spring inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium text-white mt-2" style="background: #10B981;" onclick="closeMobileMenu()">
+                Get in Touch
+            </a>
         </div>
+    </nav>
 
-        <!-- Social icons -->
-        <div class="flex items-center gap-4">
-          <!-- GitHub -->
-          <a href="https://github.com/zak-esposito" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="w-9 h-9 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-text hover:bg-brand-elevated transition-colors duration-200">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
-          <!-- LinkedIn -->
-          <a href="https://www.linkedin.com/in/zakesposito" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-9 h-9 rounded-lg flex items-center justify-center text-brand-muted hover:text-brand-text hover:bg-brand-elevated transition-colors duration-200">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-          </a>
+
+    <!-- ============ HERO ============ -->
+    <section class="min-h-screen flex items-center pt-24 pb-16 overflow-x-clip" style="background: #FAFAFA;">
+        <div class="max-w-6xl mx-auto px-6 w-full">
+            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-20">
+                <!-- Text side (LEFT on desktop) -->
+                <div class="flex-1 text-center md:text-left order-2 md:order-1">
+                    <p class="reveal font-body text-lg mb-4" style="color: #6B7280;">Hello! I'm</p>
+                    <h1 class="reveal font-heading text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-5" style="font-weight: 800; color: #111827; line-height: 1.05;">
+                        <span class="green-highlight">Zak Esposito</span>
+                    </h1>
+                    <p class="reveal font-heading text-xl sm:text-2xl mb-10" style="color: #6B7280; font-weight: 500;">
+                        Developer, Builder &amp; Problem Solver
+                    </p>
+                    <div class="reveal">
+                        <a href="#work" class="btn-spring inline-flex items-center gap-2 px-9 py-4 rounded-full text-lg font-semibold text-white" style="background: #10B981; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); font-family: 'Outfit', sans-serif;">
+                            View My Work
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" class="ml-1"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <!-- Photo side (RIGHT on desktop) -->
+                <div class="flex-shrink-0 order-1 md:order-2 reveal hero-photo-wrap">
+                    <div class="photo-shape relative w-56 h-64 sm:w-80 sm:h-[22rem] lg:w-[22rem] lg:h-[26rem]">
+                        <img src="brand_assets/DSC_3302.jpeg" alt="Zak Esposito" class="relative z-10 w-full h-full object-cover object-top rounded-xl" style="clip-path: polygon(20% 0%, 100% 0%, 100% 80%, 80% 100%, 0% 100%, 0% 20%);">
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <!-- Copyright -->
-      <div class="mt-8 pt-8 text-center" style="border-top: 1px solid #1A1A1A;">
-        <p class="text-brand-muted text-sm">&copy; 2026 Esposito Digital. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
 
-  <!-- ========== SCRIPTS ========== -->
-  <script>
-    // Nav scroll behavior
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('nav-scrolled');
-      } else {
-        navbar.classList.remove('nav-scrolled');
-      }
-    }, { passive: true });
+    <!-- ============ VALUE PROP ============ -->
+    <section class="py-24 md:py-32" style="background: #FAFAFA;">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl mb-6" style="font-weight: 700; color: #111827; line-height: 1.15;">
+                I help businesses get online and run smarter.
+            </h2>
+            <p class="reveal font-body text-lg" style="color: #6B7280;">
+                Whether you're a local business needing a website or a founder with an idea, I'll build it properly — on time, on budget, and without the agency runaround.
+            </p>
+        </div>
+    </section>
 
-    // Mobile menu toggle
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const bar1 = document.getElementById('bar1');
-    const bar2 = document.getElementById('bar2');
-    const bar3 = document.getElementById('bar3');
-    let menuOpen = false;
 
-    menuBtn.addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      mobileMenu.classList.toggle('open', menuOpen);
-      if (menuOpen) {
-        bar1.style.transform = 'rotate(45deg) translate(4px, 4px)';
-        bar2.style.opacity = '0';
-        bar3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
-      } else {
-        bar1.style.transform = '';
-        bar2.style.opacity = '';
-        bar3.style.transform = '';
-      }
-    });
+    <!-- ============ ABOUT (DARK) ============ -->
+    <section id="about" class="py-24 md:py-32" style="background: #0A0A0A;">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl mb-2" style="font-weight: 700; color: #F5F5F5; line-height: 1.15;">
+                    But first, allow me to<br>introduce... <span style="color: #10B981;">myself</span>.
+                </h2>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+                <!-- Text side -->
+                <div class="flex-1 order-2 md:order-1">
+                    <p class="reveal font-body text-base mb-5" style="color: #D1D5DB; line-height: 1.8;">
+                        I'm Zak Esposito — a final-year Computer Science student at Cardiff University. I've spent a year as a software engineer at Renishaw building production-grade tools used on real manufacturing lines, and now I build modern websites, web apps and AI-powered automations for businesses.
+                    </p>
+                    <p class="reveal font-body text-base mb-8" style="color: #D1D5DB; line-height: 1.8;">
+                        I work with React, TypeScript, C#, Node.js and modern AI tooling. I care about clean design, strong performance, and software that actually solves problems — not just looks good in a demo.
+                    </p>
+                    <div class="reveal flex flex-wrap gap-2.5">
+                        <span class="tech-react inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">React</span>
+                        <span class="tech-typescript inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">TypeScript</span>
+                        <span class="tech-csharp inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">C#</span>
+                        <span class="tech-node inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">Node.js</span>
+                        <span class="tech-python inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">Python</span>
+                        <span class="tech-tailwind inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">Tailwind CSS</span>
+                        <span class="tech-ai inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">AI / LLMs</span>
+                    </div>
+                </div>
+                <!-- Photo side -->
+                <div class="flex-shrink-0 order-1 md:order-2 reveal">
+                    <div class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80">
+                        <div class="absolute -inset-2 rounded-2xl" style="background: linear-gradient(135deg, #10B981, #059669); transform: rotate(3deg);"></div>
+                        <img src="brand_assets/DSC_3302.jpeg" alt="Zak Esposito" class="relative z-10 w-full h-full object-cover rounded-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Close mobile menu on link click
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        menuOpen = false;
-        mobileMenu.classList.remove('open');
-        bar1.style.transform = '';
-        bar2.style.opacity = '';
-        bar3.style.transform = '';
-      });
-    });
 
-    // IntersectionObserver scroll reveal
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
+    <!-- ============ MY WORK ============ -->
+    <section id="work" class="py-24 md:py-32" style="background: #FAFAFA;">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl" style="font-weight: 700; color: #111827; line-height: 1.15;">
+                    My Work
+                </h2>
+                <p class="reveal font-body text-base mt-4" style="color: #6B7280;">Projects I've designed, built, and shipped.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card 1: Snap2Shop -->
+                <div class="reveal card-lift card-light bg-white rounded-2xl overflow-hidden" style="box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);">
+                    <div class="p-4 pb-0">
+                        <div class="rounded-xl overflow-hidden" style="background: #E2E8F0;">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Snap2Shop" alt="Snap2Shop screenshot" class="w-full aspect-video object-cover" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="p-5 sm:p-6 pt-4 sm:pt-5">
+                        <h3 class="font-heading text-lg sm:text-xl mb-2" style="font-weight: 700; color: #111827;">Snap2Shop</h3>
+                        <p class="font-body text-sm mb-4" style="color: #6B7280;">AI-powered product identification app. Upload a photo, get real retailer links instantly.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-react px-2.5 py-1 rounded-full text-xs font-medium">React</span>
+                            <span class="tech-typescript px-2.5 py-1 rounded-full text-xs font-medium">TypeScript</span>
+                            <span class="tech-gemini px-2.5 py-1 rounded-full text-xs font-medium">Gemini AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: VentureForge -->
+                <div class="reveal card-lift card-light bg-white rounded-2xl overflow-hidden" style="box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);">
+                    <div class="p-4 pb-0">
+                        <div class="rounded-xl overflow-hidden" style="background: #E2E8F0;">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=VentureForge" alt="VentureForge screenshot" class="w-full aspect-video object-cover" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="p-5 sm:p-6 pt-4 sm:pt-5">
+                        <h3 class="font-heading text-lg sm:text-xl mb-2" style="font-weight: 700; color: #111827;">VentureForge</h3>
+                        <p class="font-body text-sm mb-4" style="color: #6B7280;">AI-powered R&D lab for solo founders with structured workflows.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-typescript px-2.5 py-1 rounded-full text-xs font-medium">TypeScript</span>
+                            <span class="tech-ai px-2.5 py-1 rounded-full text-xs font-medium">AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Bakehouse 72 -->
+                <div class="reveal card-lift card-light bg-white rounded-2xl overflow-hidden md:col-span-2 md:max-w-[calc(50%-1rem)] md:mx-auto" style="box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);">
+                    <div class="p-4 pb-0">
+                        <div class="rounded-xl overflow-hidden" style="background: #E2E8F0;">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Bakehouse+72" alt="Bakehouse 72 screenshot" class="w-full aspect-video object-cover" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="p-5 sm:p-6 pt-4 sm:pt-5">
+                        <h3 class="font-heading text-lg sm:text-xl mb-2" style="font-weight: 700; color: #111827;">Bakehouse 72</h3>
+                        <p class="font-body text-sm mb-4" style="color: #6B7280;">Modern website concept for a local Welsh bakery.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-design px-2.5 py-1 rounded-full text-xs font-medium">Web Design</span>
+                            <span class="tech-tailwind px-2.5 py-1 rounded-full text-xs font-medium">Tailwind</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="py-24 md:py-32" style="background: #FFFFFF;">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl mb-4" style="font-weight: 700; color: #111827; line-height: 1.15;">
+                    Got a project in mind?
+                </h2>
+                <p class="reveal font-body text-lg" style="color: #6B7280;">
+                    Drop me an email at <a href="mailto:zakesposito03@gmail.com" class="font-medium" style="color: #10B981; text-decoration: underline; text-underline-offset: 3px;">zakesposito03@gmail.com</a> or use the form below.
+                </p>
+            </div>
+            <form class="reveal max-w-lg mx-auto space-y-5" onsubmit="event.preventDefault();">
+                <div>
+                    <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Name</label>
+                    <input type="text" class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Your name">
+                </div>
+                <div>
+                    <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Email</label>
+                    <input type="email" class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="you@example.com">
+                </div>
+                <div>
+                    <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Message</label>
+                    <textarea rows="5" class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm resize-none" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Tell me about your project..."></textarea>
+                </div>
+                <button type="submit" class="btn-spring w-full py-3.5 rounded-xl text-white font-medium font-body text-sm" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+                    Send Message
+                </button>
+            </form>
+            <div class="reveal flex items-center justify-center gap-6 mt-10">
+                <a href="https://github.com/zak-esposito" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 font-body text-sm" style="color: #6B7280; transition: color 0.2s ease;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#6B7280'">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/zakesposito" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 font-body text-sm" style="color: #6B7280; transition: color 0.2s ease;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#6B7280'">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="py-10" style="background: #FAFAFA; border-top: 1px solid #E5E7EB;">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="font-body text-sm" style="color: #6B7280;">&copy; 2026 Zak Esposito. All rights reserved.</p>
+            <p class="font-body text-xs mt-2" style="color: #9CA3AF;">Build fast. Learn deeply. Ship real things.</p>
+        </div>
+    </footer>
+
+
+    <!-- ============ SCRIPTS ============ -->
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const bar1 = document.getElementById('bar1');
+        const bar2 = document.getElementById('bar2');
+        const bar3 = document.getElementById('bar3');
+        let menuOpen = false;
+
+        menuToggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('open');
+            if (menuOpen) {
+                bar1.style.transform = 'rotate(45deg) translate(4px, 4px)';
+                bar2.style.opacity = '0';
+                bar3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
+            } else {
+                bar1.style.transform = '';
+                bar2.style.opacity = '1';
+                bar3.style.transform = '';
+            }
+        });
+
+        function closeMobileMenu() {
+            menuOpen = false;
+            mobileMenu.classList.remove('open');
+            bar1.style.transform = '';
+            bar2.style.opacity = '1';
+            bar3.style.transform = '';
         }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-    revealElements.forEach(el => revealObserver.observe(el));
-  </script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

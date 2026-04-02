@@ -405,10 +405,9 @@
                     Drop me an email at <a href="mailto:zakesposito03@gmail.com" class="font-medium" style="color: #10B981; text-decoration: underline; text-underline-offset: 3px;">zakesposito03@gmail.com</a> or use the form below.
                 </p>
             </div>
-            <form class="reveal max-w-lg mx-auto space-y-5" action="https://formsubmit.co/zakesposito03@gmail.com" method="POST">
+            <form id="contact-form" class="reveal max-w-lg mx-auto space-y-5" action="https://formsubmit.co/ajax/747531c8f02f2af970e5918b56eb4f3f" method="POST">
                 <input type="hidden" name="_subject" value="New enquiry from zakesposito.dev">
                 <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://zakesposito.dev">
                 <div>
                     <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Name</label>
                     <input type="text" name="name" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Your name">
@@ -421,10 +420,17 @@
                     <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Message</label>
                     <textarea rows="5" name="message" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm resize-none" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Tell me about your project..."></textarea>
                 </div>
-                <button type="submit" class="btn-spring w-full py-3.5 rounded-xl text-white font-medium font-body text-sm" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+                <button type="submit" id="contact-submit" class="btn-spring w-full py-3.5 rounded-xl text-white font-medium font-body text-sm" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
                     Send Message
                 </button>
             </form>
+            <div id="form-success" class="hidden max-w-lg mx-auto text-center py-12">
+                <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="#10B981"/><path d="M14 25l7 7 13-13" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <p class="font-body text-lg font-medium" style="color: #111827;">Thanks! I'll get back to you soon.</p>
+            </div>
+            <div id="form-error" class="hidden max-w-lg mx-auto text-center py-4">
+                <p class="font-body text-sm" style="color: #EF4444;">Something went wrong. Try emailing me directly at <a href="mailto:zakesposito03@gmail.com" class="underline" style="color: #EF4444;">zakesposito03@gmail.com</a></p>
+            </div>
             <div class="reveal flex items-center justify-center gap-6 mt-10">
                 <a href="https://github.com/zak-esposito" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 font-body text-sm" style="color: #6B7280; transition: color 0.2s ease;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#6B7280'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -503,6 +509,37 @@
             bar2.style.opacity = '1';
             bar3.style.transform = '';
         }
+
+        // Contact form ajax submit
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('contact-submit');
+        const formSuccess = document.getElementById('form-success');
+        const formError = document.getElementById('form-error');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            formError.classList.add('hidden');
+
+            try {
+                const res = await fetch(contactForm.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(new FormData(contactForm)))
+                });
+                if (res.ok) {
+                    contactForm.classList.add('hidden');
+                    formSuccess.classList.remove('hidden');
+                } else {
+                    throw new Error('Submit failed');
+                }
+            } catch {
+                formError.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
+        });
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

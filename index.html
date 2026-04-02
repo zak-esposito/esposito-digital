@@ -405,18 +405,21 @@
                     Drop me an email at <a href="mailto:zakesposito03@gmail.com" class="font-medium" style="color: #10B981; text-decoration: underline; text-underline-offset: 3px;">zakesposito03@gmail.com</a> or use the form below.
                 </p>
             </div>
-            <form class="reveal max-w-lg mx-auto space-y-5" onsubmit="event.preventDefault();">
+            <form class="reveal max-w-lg mx-auto space-y-5" action="https://formsubmit.co/zakesposito03@gmail.com" method="POST">
+                <input type="hidden" name="_subject" value="New enquiry from zakesposito.dev">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="https://zakesposito.dev">
                 <div>
                     <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Name</label>
-                    <input type="text" class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Your name">
+                    <input type="text" name="name" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Your name">
                 </div>
                 <div>
                     <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Email</label>
-                    <input type="email" class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="you@example.com">
+                    <input type="email" name="email" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="you@example.com">
                 </div>
                 <div>
                     <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Message</label>
-                    <textarea rows="5" class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm resize-none" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Tell me about your project..."></textarea>
+                    <textarea rows="5" name="message" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm resize-none" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Tell me about your project..."></textarea>
                 </div>
                 <button type="submit" class="btn-spring w-full py-3.5 rounded-xl text-white font-medium font-body text-sm" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
                     Send Message

@@ -149,6 +149,14 @@
       </button>
     </div>
 
+    <!-- Animated menu background (drifting glows + circuit-node canvas).
+         Sits behind the .app content; hidden on scene routes via CSS. -->
+    <div class="menu-bg" aria-hidden="true">
+      <span class="menu-bg__glow menu-bg__glow--a"></span>
+      <span class="menu-bg__glow menu-bg__glow--b"></span>
+      <canvas class="menu-bg__canvas" data-circuit-canvas></canvas>
+    </div>
+
     <!-- HUD frame at viewport edges -->
     <div class="hud-frame" aria-hidden="true">
         <span class="hud-frame__corner hud-frame__corner--tl"></span>

@@ -1,6 +1,7 @@
 import { initRouter } from './router.js';
 import { audioBus } from './audio.js';
 import { initBoot } from './boot.js';
+import { initCircuit } from './circuit.js';
 
 function exposeForTuning() {
   const ns = (window.ze = window.ze || {});
@@ -98,6 +99,7 @@ function boot() {
   installMusicToggle();
   initRouter();
   initBoot();
+  initCircuit();
 }
 
 if (document.readyState === 'loading') {

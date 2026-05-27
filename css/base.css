@@ -35,7 +35,9 @@ body {
   position: relative;
 }
 
-/* Background atmosphere: layered radial gradients */
+/* Background atmosphere: static bottom-edge darkener. The emerald glow orbs
+   that used to live here have moved into .menu-bg so they can animate
+   without touching this layer. */
 body::before {
   content: '';
   position: fixed;
@@ -43,9 +45,71 @@ body::before {
   z-index: var(--z-bg);
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 60% at 18% -10%, rgba(16, 185, 129, 0.08), transparent 55%),
-    radial-gradient(ellipse 60% 50% at 100% 110%, rgba(16, 185, 129, 0.04), transparent 60%),
     radial-gradient(ellipse 120% 80% at 50% 100%, rgba(0, 0, 0, 0.55), transparent 50%);
+}
+
+/* Animated menu background: drifting glow orbs + circuit-node canvas.
+   Only visible on the main menu (body is not .is-scene). */
+.menu-bg {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  pointer-events: none;
+  overflow: hidden;
+}
+body.is-scene .menu-bg { display: none; }
+
+.menu-bg__glow {
+  position: absolute;
+  width: 90vmax;
+  height: 90vmax;
+  border-radius: 50%;
+  filter: blur(40px);
+  will-change: transform;
+}
+.menu-bg__glow--a {
+  top: -55vmax;
+  left: -45vmax;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0) 60%);
+  animation: menu-bg-orbit-a 20s linear infinite;
+}
+.menu-bg__glow--b {
+  bottom: -55vmax;
+  right: -45vmax;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0) 60%);
+  animation: menu-bg-orbit-b 20s linear infinite;
+}
+
+@keyframes menu-bg-orbit-a {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(14vw, 6vh); }
+  50%  { transform: translate(20vw, 16vh); }
+  75%  { transform: translate(6vw, 12vh); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes menu-bg-orbit-b {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-14vw, -6vh); }
+  50%  { transform: translate(-20vw, -16vh); }
+  75%  { transform: translate(-6vw, -12vh); }
+  100% { transform: translate(0, 0); }
+}
+
+.menu-bg__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .menu-bg__glow--a {
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0) 60%);
+  }
+  .menu-bg__glow--b {
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0) 60%);
+  }
 }
 
 /* Grain texture overlay */
@@ -254,5 +318,11 @@ button {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+  /* The orbit keyframes don't make sense at 0.01ms (they'd snap-loop). Pause
+     them in place instead so the glows hold position. The canvas RAF loop
+     is short-circuited inside circuit.js. */
+  .menu-bg__glow {
+    animation: none !important;
   }
 }

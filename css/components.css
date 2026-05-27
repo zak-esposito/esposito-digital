@@ -87,14 +87,15 @@
   display: none;
 }
 
-/* Mute toggle (persistent HUD chrome) */
+/* Mute toggle (persistent HUD chrome). Two buttons sit as a group on the right:
+   music (.mute-btn--music) on the left, SFX (.mute-btn) on the right. */
 .mute-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin-left: 24px;
+  margin-left: 8px;
   flex-shrink: 0;
   background: var(--bg-elevated);
   border: 1px solid var(--border-hairline);
@@ -124,6 +125,9 @@
   color: var(--accent);
   border-style: solid;
 }
+.mute-btn--music {
+  margin-left: 24px;
+}
 .mute-btn__icon {
   width: 16px;
   height: 16px;
@@ -145,7 +149,8 @@ body.is-scene .hud-bottom__hint--scene { display: flex; }
   .back-btn { padding: 0; width: 44px; height: 44px; justify-content: center; }
   .back-btn__arrow { width: 18px; height: 18px; }
   .hud-top__mode-tag { display: none; }
-  .mute-btn { margin-left: 12px; width: 44px; height: 44px; }
+  .mute-btn { margin-left: 8px; width: 44px; height: 44px; }
+  .mute-btn--music { margin-left: 12px; }
   .mute-btn__icon { width: 20px; height: 20px; }
   /* Both hint variants are replaced by the back button + tile tap on mobile. */
   .hud-bottom__hint--scene,

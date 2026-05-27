@@ -1,17 +1,22 @@
-const STORAGE_KEY = 'ze.audio.muted';
+const SFX_STORAGE_KEY = 'ze.audio.sfxMuted';
+const MUSIC_STORAGE_KEY = 'ze.audio.musicMuted';
 const SOUND_NAMES = ['bootChime', 'uiBlip', 'uiConfirm', 'uiBack'];
 
-function readStoredMute() {
+const BG_MUSIC_URL = 'assets/audio/bg-music.mp3';
+const MUSIC_TARGET_GAIN = 0.35;
+const MUSIC_FADE_SECONDS = 2;
+
+function readStoredFlag(key) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(key);
     if (raw === '1') return { value: true, stored: true };
     if (raw === '0') return { value: false, stored: true };
   } catch (_) { /* localStorage blocked */ }
   return { value: false, stored: false };
 }
 
-function writeStoredMute(value) {
-  try { localStorage.setItem(STORAGE_KEY, value ? '1' : '0'); } catch (_) {}
+function writeStoredFlag(key, value) {
+  try { localStorage.setItem(key, value ? '1' : '0'); } catch (_) {}
 }
 
 function prefersReducedMotion() {
@@ -118,13 +123,26 @@ const SYNTHS = { uiBlip, uiConfirm, uiBack };
 class AudioBus {
   constructor() {
     this.ctx = null;
-    this.master = null;
+    this.master = null;       // SFX bus
+    this.musicGain = null;    // Music bus (independent of SFX)
+    this.musicEl = null;      // HTMLAudioElement source for bg music
+    this.musicSrc = null;     // MediaElementAudioSourceNode
+    this.musicStarted = false;
+    this.musicStartTimer = null;
     this.bootBuffer = null;
     this.bootLoading = null;
-    const stored = readStoredMute();
-    // First visit under reduced-motion auto-mutes; explicit user choice always wins later.
-    this.muted = stored.stored ? stored.value : prefersReducedMotion();
-    if (!stored.stored && this.muted) writeStoredMute(true);
+
+    const sfx = readStoredFlag(SFX_STORAGE_KEY);
+    // First visit under reduced-motion auto-mutes SFX; explicit user choice always wins later.
+    this.sfxMuted = sfx.stored ? sfx.value : prefersReducedMotion();
+    if (!sfx.stored && this.sfxMuted) writeStoredFlag(SFX_STORAGE_KEY, true);
+
+    const music = readStoredFlag(MUSIC_STORAGE_KEY);
+    // Music defaults to unmuted on first visit; reduced-motion does NOT auto-mute it.
+    this.musicMuted = music.stored ? music.value : false;
+
+    this._onVisibility = this._onVisibility.bind(this);
+    document.addEventListener('visibilitychange', this._onVisibility);
   }
 
   unlock() {
@@ -133,9 +151,15 @@ class AudioBus {
       if (!Ctx) return;
       this.ctx = new Ctx();
       this.master = this.ctx.createGain();
-      this.master.gain.value = this.muted ? 0 : 1;
+      this.master.gain.value = this.sfxMuted ? 0 : 1;
       this.master.connect(this.ctx.destination);
+
+      this.musicGain = this.ctx.createGain();
+      this.musicGain.gain.value = 0; // starts silent; faded in by startMusic()
+      this.musicGain.connect(this.ctx.destination);
+
       this._preloadBoot();
+      this._prepareMusic();
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume().catch(() => {});
@@ -159,10 +183,27 @@ class AudioBus {
     return this.bootLoading;
   }
 
+  _prepareMusic() {
+    if (this.musicEl) return;
+    const el = new Audio(BG_MUSIC_URL);
+    el.loop = true;
+    el.preload = 'auto';
+    el.crossOrigin = 'anonymous';
+    // Element volume stays at 1.0; the musicGain node is what we modulate.
+    el.volume = 1;
+    this.musicEl = el;
+    try {
+      this.musicSrc = this.ctx.createMediaElementSource(el);
+      this.musicSrc.connect(this.musicGain);
+    } catch (err) {
+      console.warn('[audio] bg-music source failed:', err);
+    }
+  }
+
   _playBoot() {
     const play = (buffer) => {
       if (!buffer) return;
-      if (this.muted) return;
+      if (this.sfxMuted) return;
       if (!this.ctx || this.ctx.state !== 'running') return;
       const src = this.ctx.createBufferSource();
       src.buffer = buffer;
@@ -182,19 +223,64 @@ class AudioBus {
     }
   }
 
+  // Begin background music with a fade-in. Call after unlock() and after a user
+  // gesture. `delayMs` lets the caller stagger music behind the boot chime
+  // (boot path = 1500ms; return-visitor path = 0).
+  startMusic({ delayMs = 0 } = {}) {
+    if (this.musicStarted) return;
+    if (!this.ctx || !this.musicEl || !this.musicGain) return;
+    this.musicStarted = true;
+
+    const begin = () => {
+      if (this.musicMuted) return; // user pre-muted before fade kicked off
+      if (document.visibilityState === 'hidden') return;
+
+      this._fadeMusicTo(MUSIC_TARGET_GAIN, MUSIC_FADE_SECONDS);
+      const p = this.musicEl.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch((err) => console.warn('[audio] music play blocked:', err));
+      }
+    };
+
+    if (delayMs > 0) {
+      this.musicStartTimer = setTimeout(begin, delayMs);
+    } else {
+      begin();
+    }
+  }
+
+  _fadeMusicTo(target, seconds) {
+    if (!this.ctx || !this.musicGain) return;
+    const now = this.ctx.currentTime;
+    const g = this.musicGain.gain;
+    const current = g.value;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(current, now);
+    g.linearRampToValueAtTime(target, now + Math.max(0.01, seconds));
+  }
+
+  _onVisibility() {
+    if (!this.musicEl) return;
+    if (document.visibilityState === 'hidden') {
+      if (!this.musicEl.paused) this.musicEl.pause();
+    } else if (this.musicStarted && !this.musicMuted) {
+      const p = this.musicEl.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    }
+  }
+
   isUnlocked() {
     return !!this.ctx && this.ctx.state === 'running';
   }
 
-  isMuted() {
-    return this.muted;
-  }
+  // ── SFX controls ────────────────────────────────────────────────────────
+  isSfxMuted() { return this.sfxMuted; }
 
-  setMuted(value) {
+  setSfxMuted(value) {
     const next = !!value;
-    if (next === this.muted) return;
-    this.muted = next;
-    writeStoredMute(next);
+    if (next === this.sfxMuted) return;
+    this.sfxMuted = next;
+    writeStoredFlag(SFX_STORAGE_KEY, next);
     if (this.master && this.ctx) {
       const target = next ? 0 : 1;
       this.master.gain.cancelScheduledValues(this.ctx.currentTime);
@@ -202,13 +288,44 @@ class AudioBus {
     }
   }
 
-  toggleMute() {
-    this.setMuted(!this.muted);
-    return this.muted;
+  toggleSfxMute() {
+    this.setSfxMuted(!this.sfxMuted);
+    return this.sfxMuted;
+  }
+
+  // ── Music controls ──────────────────────────────────────────────────────
+  isMusicMuted() { return this.musicMuted; }
+
+  setMusicMuted(value) {
+    const next = !!value;
+    if (next === this.musicMuted) return;
+    this.musicMuted = next;
+    writeStoredFlag(MUSIC_STORAGE_KEY, next);
+
+    if (!this.musicEl) return;
+    if (next) {
+      this._fadeMusicTo(0, 0.2);
+      // Pause shortly after the fade completes so we stop wasting decode cycles.
+      setTimeout(() => {
+        if (this.musicMuted && this.musicEl && !this.musicEl.paused) this.musicEl.pause();
+      }, 220);
+    } else if (this.musicStarted) {
+      // User unmuted after music had already been scheduled to start.
+      if (document.visibilityState !== 'hidden') {
+        const p = this.musicEl.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      }
+      this._fadeMusicTo(MUSIC_TARGET_GAIN, 0.4);
+    }
+  }
+
+  toggleMusicMute() {
+    this.setMusicMuted(!this.musicMuted);
+    return this.musicMuted;
   }
 
   play(name) {
-    if (this.muted) return;
+    if (this.sfxMuted) return;
     if (!this.ctx || this.ctx.state !== 'running') return;
     if (name === 'bootChime') {
       this._playBoot();

@@ -77,6 +77,9 @@ async function advance(overlay) {
 
   audioBus.unlock();
   audioBus.play('bootChime');
+  // Music lands after the boot chime + tile cascade so the chime owns the
+  // first moment; the 2s fade-in pairs with tiles settling.
+  audioBus.startMusic({ delayMs: 1500 });
 
   await Promise.all([exitOverlay(overlay), cascadeTiles()]);
 

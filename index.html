@@ -110,6 +110,17 @@
                 <path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/>
                 <path d="M17 9l5 6M22 9l-5 6"/>
             </symbol>
+            <symbol id="icon-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 17V5l11-2v12"/>
+                <circle cx="6.5" cy="17" r="2.5"/>
+                <circle cx="17.5" cy="15" r="2.5"/>
+            </symbol>
+            <symbol id="icon-music-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 17V5l11-2v12"/>
+                <circle cx="6.5" cy="17" r="2.5"/>
+                <circle cx="17.5" cy="15" r="2.5"/>
+                <path d="M3 3l18 18"/>
+            </symbol>
         </defs>
     </svg>
 
@@ -172,7 +183,10 @@
                     <span class="hud-top__mode-name" data-mode-name>—</span>
                 </div>
             </div>
-            <button class="mute-btn" data-mute type="button" aria-pressed="false" aria-label="Mute audio" title="Mute audio">
+            <button class="mute-btn mute-btn--music" data-music-mute type="button" aria-pressed="false" aria-label="Toggle music" title="Toggle music">
+                <svg class="mute-btn__icon" aria-hidden="true"><use href="#icon-music"/></svg>
+            </button>
+            <button class="mute-btn" data-mute type="button" aria-pressed="false" aria-label="Toggle sound effects" title="Toggle sound effects">
                 <svg class="mute-btn__icon" aria-hidden="true"><use href="#icon-volume"/></svg>
             </button>
         </header>

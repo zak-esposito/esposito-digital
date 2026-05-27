@@ -1,3 +1,5 @@
+import { audioBus } from './audio.js';
+
 const REDUCED_MOTION_MQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 const COARSE_POINTER_MQ = window.matchMedia('(pointer: coarse)');
 
@@ -145,6 +147,27 @@ function installArrowNav() {
   const grid = document.querySelector('.tile-grid');
   if (!grid) return;
 
+  const isArrowKey = (k) =>
+    k === 'ArrowUp' || k === 'ArrowDown' || k === 'ArrowLeft' || k === 'ArrowRight';
+
+  // Auto-focus tile 00 when the user presses an arrow key with no tile focused.
+  // Keeps the footer hint discoverable without needing Tab first.
+  document.addEventListener('keydown', (e) => {
+    if (!isArrowKey(e.key)) return;
+    if (grid.offsetParent === null) return;
+    const tiles = grid.querySelectorAll('.tile');
+    if (!tiles.length) return;
+    if (grid.contains(document.activeElement)) return;
+    const target = e.target;
+    if (target instanceof HTMLElement) {
+      const tag = target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || target.isContentEditable) return;
+    }
+    e.preventDefault();
+    tiles[0].focus();
+    audioBus.play('uiBlip');
+  });
+
   grid.addEventListener('keydown', (e) => {
     const tiles = Array.from(grid.querySelectorAll('.tile'));
     if (!tiles.length) return;
@@ -192,6 +215,7 @@ function installArrowNav() {
     if (next < 0 || next === idx) return;
     e.preventDefault();
     tiles[next].focus();
+    audioBus.play('uiBlip');
   });
 }
 

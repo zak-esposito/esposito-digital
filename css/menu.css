@@ -93,6 +93,9 @@
 
 .tile:focus-visible {
   outline: none;
+  background:
+    linear-gradient(135deg, rgba(16, 185, 129, 0.04), transparent 50%),
+    var(--bg-tile-hover);
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent), 0 0 36px var(--accent-glow);
 }
@@ -114,7 +117,8 @@
   pointer-events: none;
   z-index: 1;
 }
-.tile:hover::before {
+.tile:hover::before,
+.tile:focus-visible::before {
   opacity: 1;
   transform: translateY(100%);
   transition: opacity 200ms var(--ease-smooth), transform 900ms var(--ease-smooth);
@@ -171,7 +175,8 @@
   color: var(--text-dim);
   transition: color 220ms var(--ease-smooth), transform 320ms var(--ease-spring);
 }
-.tile:hover .tile__icon {
+.tile:hover .tile__icon,
+.tile:focus-visible .tile__icon {
   color: var(--accent-soft);
   transform: rotate(-4deg) scale(1.06);
 }
@@ -218,7 +223,8 @@
   text-transform: uppercase;
   transition: color 220ms var(--ease-smooth), gap 220ms var(--ease-smooth);
 }
-.tile:hover .tile__action {
+.tile:hover .tile__action,
+.tile:focus-visible .tile__action {
   color: var(--accent);
   gap: 16px;
 }
@@ -249,7 +255,8 @@
   width: 100%;
   height: 100%;
 }
-.tile:hover .tile__watermark {
+.tile:hover .tile__watermark,
+.tile:focus-visible .tile__watermark {
   color: rgba(16, 185, 129, 0.07);
   transform: translateY(-6px) rotate(-2deg);
 }

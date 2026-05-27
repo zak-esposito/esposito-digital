@@ -133,6 +133,58 @@
   height: 16px;
 }
 
+/* Custom cursor — desktop only. Activated by js/cursor.js when (pointer: fine).
+   .has-custom-cursor on <html> hides the system cursor everywhere; the dot/ring
+   are positioned each frame via JS (transform on the outer element). The inner
+   span carries the visual + the -50% centering offset + the hover/punch scale,
+   so CSS can transition the scale without fighting the per-frame JS transform. */
+html.has-custom-cursor,
+html.has-custom-cursor *,
+html.has-custom-cursor *::before,
+html.has-custom-cursor *::after {
+  cursor: none !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: opacity 150ms ease;
+}
+.cursor-dot.is-visible { opacity: 0.9; }
+.cursor-ring.is-visible { opacity: 0.6; }
+.cursor-ring.is-hover.is-visible { opacity: 0.9; }
+
+.cursor-dot > span,
+.cursor-ring > span {
+  display: block;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 150ms ease;
+  will-change: transform;
+}
+.cursor-dot > span {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+}
+.cursor-ring > span {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--accent);
+}
+.cursor-dot.is-hover > span { transform: translate(-50%, -50%) scale(0.5); }
+.cursor-ring.is-hover > span { transform: translate(-50%, -50%) scale(1.6); }
+.cursor-dot.is-punch > span {
+  transform: translate(-50%, -50%) scale(1.8);
+  transition: transform 20ms ease;
+}
+
 /* HUD bottom hint variants */
 .hud-bottom__hint {
   display: flex;

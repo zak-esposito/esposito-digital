@@ -2,6 +2,7 @@ import { initRouter } from './router.js';
 import { audioBus } from './audio.js';
 import { initBoot } from './boot.js';
 import { initCircuit } from './circuit.js';
+import { initCursor } from './cursor.js';
 
 function exposeForTuning() {
   const ns = (window.ze = window.ze || {});
@@ -100,6 +101,7 @@ function boot() {
   initRouter();
   initBoot();
   initCircuit();
+  initCursor();
 }
 
 if (document.readyState === 'loading') {

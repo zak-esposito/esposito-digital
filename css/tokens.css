@@ -1,0 +1,52 @@
+:root {
+  /* Surfaces */
+  --bg-base: #07090A;
+  --bg-elevated: #0D1113;
+  --bg-tile: #11171A;
+  --bg-tile-hover: #141B1F;
+
+  /* Borders */
+  --border-hairline: rgba(255, 255, 255, 0.06);
+  --border-bright: rgba(16, 185, 129, 0.45);
+  --border-glow: rgba(16, 185, 129, 0.18);
+
+  /* Accent (locked brand green) */
+  --accent: #10B981;
+  --accent-soft: #34D399;
+  --accent-dim: rgba(16, 185, 129, 0.45);
+  --accent-glow: rgba(16, 185, 129, 0.14);
+
+  /* Text — muted bumped from #6A7378 (4.12:1) to clear AA at the small
+     HUD mono sizes used in the chrome. */
+  --text-primary: #E8EBED;
+  --text-secondary: #A8B0B5;
+  --text-muted: #828A8F;
+  --text-dim: #3F474B;
+
+  /* Type scale */
+  --fs-display: clamp(2.5rem, 5vw, 4.25rem);
+  --fs-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --fs-mono-sm: 0.72rem;
+  --fs-mono-xs: 0.62rem;
+  --fs-body: 1rem;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+
+  /* Easing */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-layers */
+  --z-bg: 0;
+  --z-grain: 1;
+  --z-content: 10;
+  --z-hud: 100;
+  --z-overlay: 1000;
+}

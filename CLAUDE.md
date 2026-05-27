@@ -1,60 +1,20 @@
-# CLAUDE.md — Frontend Website Rules
-
-## Always Do First
-- **Invoke the `frontend-design` skill** before writing any frontend code, every session, no exceptions.
-
 ## Project Context
-- This is a portfolio/agency website for "Esposito Digital" — a freelance digital services business based in Wales, UK.
-- The site must feel premium, dark-themed, and professional.
-- Target audience: small business owners who need websites, apps, or automations.
-- Check `brand_assets/brand-guidelines.md` for all brand colours, typography, tone, and section requirements.
+- This is Zak Esposito's personal developer portfolio (live at zakesposito.dev). It is NOT the business/agency site.
+- Audience: developers, recruiters, hiring managers. They judge it on craft, personality, and originality, not conversion copy.
+- Goal: the site itself is the strongest project on it. Bold, playful, memorable, demonstrably well-built.
+- Theme: an original racing-game main-menu experience (boot sequence, tile-based mode select, sound design, motion). All assets original. Do NOT use Ferrari, F1, PlayStation, LEGO, or any real brand assets, logos, or copyrighted material.
+- The accent green (#10B981) is the only colour through-line so the site still reads as "Zak"; the dark racing palette owns the rest.
 
-## Reference Images
-- If a reference image is provided: match layout, spacing, typography, and color exactly. Swap in placeholder content (images via `https://placehold.co/`, generic copy). Do not improve or add to the design.
-- If no reference image: design from scratch with high craft (see guardrails below).
-- Screenshot your output, compare against reference, fix mismatches, re-screenshot. Do at least 2 comparison rounds. Stop only when no visible differences remain or user says so.
+## Styling
+- Hand-written CSS in [css/](css/) with custom properties defined in [css/tokens.css](css/tokens.css). No Tailwind CDN, no utility framework, no build step for styles.
+- All colour, type-scale, spacing, easing, and z-layer values flow through CSS custom properties — never hard-code a hex outside of `tokens.css`.
+- Dark theme only: `--bg-base: #07090A`, text `--text-primary: #E8EBED`, single accent `--accent: #10B981`.
 
-## Local Server
-- **Always serve on localhost** — never screenshot a `file:///` URL.
-- Start the dev server: `node serve.mjs` (serves the project root at `http://localhost:3000`)
-- `serve.mjs` lives in the project root. Start it in the background before taking any screenshots.
-- If the server is already running, do not start a second instance.
+## Audio
+- UI sounds (hover, select, back, error, etc.) are synthesised at runtime via WebAudio — no sample files.
+- One exception: the boot chime uses a CC0 sample at [assets/audio/boot-chime.mp3](assets/audio/boot-chime.mp3) for `bootChime`. Any new ambient/musical cue should be WebAudio-synthesised unless there's a specific reason a sample is required, in which case it must be CC0 / public-domain licensed and documented here.
 
-## Screenshot Workflow
-- Ask Claude Code to set up Puppeteer if not already configured.
-- **Always screenshot from localhost:** `node screenshot.mjs http://localhost:3000`
-- Screenshots are saved automatically to `./temporary screenshots/screenshot-N.png`
-- After screenshotting, read the PNG from `temporary screenshots/` with the Read tool.
-- When comparing, be specific: "heading is 32px but reference shows ~24px", "card gap is 16px but should be 24px"
-- Check: spacing/padding, font size/weight/line-height, colors (exact hex), alignment, border-radius, shadows, image sizing
-
-## Output Defaults
-- Single `index.html` file, all styles inline, unless user says otherwise
-- Tailwind CSS via CDN: `<script src="https://cdn.tailwindcss.com"></script>`
-- Placeholder images: `https://placehold.co/WIDTHxHEIGHT`
-- Mobile-first responsive
-
-## Brand Assets
-- Always check the `brand_assets/` folder before designing. It may contain logos, color guides, style guides, or images.
-- If assets exist there, use them. Do not use placeholders where real assets are available.
-- If a logo is present, use it. If a color palette is defined, use those exact values — do not invent brand colors.
-
-## Anti-Generic Guardrails
-- **Colors:** Never use default Tailwind palette (indigo-500, blue-600, etc.). Pick a custom brand color and derive from it.
-- **Shadows:** Never use flat `shadow-md`. Use layered, color-tinted shadows with low opacity.
-- **Typography:** Never use the same font for headings and body. Pair a display/serif with a clean sans. Apply tight tracking (`-0.03em`) on large headings, generous line-height (`1.7`) on body.
-- **Gradients:** Layer multiple radial gradients. Add grain/texture via SVG noise filter for depth.
-- **Animations:** Only animate `transform` and `opacity`. Never `transition-all`. Use spring-style easing.
-- **Interactive states:** Every clickable element needs hover, focus-visible, and active states. No exceptions.
-- **Images:** Add a gradient overlay (`bg-gradient-to-t from-black/60`) and a color treatment layer with `mix-blend-multiply`.
-- **Spacing:** Use intentional, consistent spacing tokens — not random Tailwind steps.
-- **Depth:** Surfaces should have a layering system (base → elevated → floating), not all sit at the same z-plane.
-
-## Hard Rules
-- Do not add sections, features, or content not in the reference
-- Do not "improve" a reference design — match it
-- Do not stop after one screenshot pass
-- Do not use `transition-all`
-- Do not use default Tailwind blue/indigo as primary color
-- When making changes, always test on localhost first
-- Don't commit or push to GitHub until I explicitly tell you to
+## Reference / Originality
+- No reference image to match. Design from scratch with high craft.
+- Invent the look. Do not copy any existing site or game UI; take inspiration for motion and feel only.
+- Still screenshot and iterate (at least 2 Puppeteer rounds), comparing against the plan and fixing rough edges.

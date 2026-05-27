@@ -3,535 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zak Esposito, Freelance Web Developer in Llanelli, Wales</title>
-    <meta name="description" content="Zak Esposito, freelance web developer in Llanelli, Wales. Fast, affordable websites for local businesses. React, Tailwind CSS, AI automation.">
+    <title>Zak Esposito — Developer & Builder</title>
+    <meta name="description" content="Zak Esposito — developer and builder based in Llanelli, Wales. Personal portfolio built as a racing-game main menu. Real engineering, original craft, ship-real-things energy.">
     <meta name="author" content="Zak Esposito">
     <link rel="canonical" href="https://zakesposito.dev">
-    <meta property="og:title" content="Zak Esposito, Freelance Web Developer in Wales">
-    <meta property="og:description" content="I help local businesses in Llanelli and Cardiff get online with fast, affordable websites. Modern design, Tailwind CSS, and AI-powered automation.">
+    <meta name="theme-color" content="#07090A">
+
+    <meta property="og:title" content="Zak Esposito — Developer & Builder">
+    <meta property="og:description" content="Personal portfolio of Zak Esposito — developer and builder in Wales. Career, Garage, Time Trial, Pit Radio. Built from scratch as a racing-game main menu.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://zakesposito.dev">
     <meta property="og:image" content="https://zakesposito.dev/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Zak Esposito, Freelance Web Developer in Wales">
-    <meta name="twitter:description" content="I help local businesses in Llanelli and Cardiff get online with fast, affordable websites. Modern design, Tailwind CSS, and AI-powered automation.">
+    <meta name="twitter:title" content="Zak Esposito — Developer & Builder">
+    <meta name="twitter:description" content="Personal portfolio of Zak Esposito — developer and builder in Wales. Career, Garage, Time Trial, Pit Radio. Built from scratch as a racing-game main menu.">
     <meta name="twitter:image" content="https://zakesposito.dev/og-image.png">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
-    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=DM+Sans:wght@400&family=JetBrains+Mono:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=DM+Sans:wght@400&family=JetBrains+Mono:wght@500;600;700&display=swap">
+
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/boot.css">
+    <!-- scenes.css only paints inside scene routes; load non-blocking so the
+         menu (FCP) isn't gated on it. SPA navigation happens after the user
+         has had time to read the menu, so scenes.css is reliably ready. -->
+    <link rel="preload" as="style" href="css/scenes.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/scenes.css"></noscript>
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            bg: '#FAFAFA',
-                            surface: '#FFFFFF',
-                            dark: '#0A0A0A',
-                            accent: '#10B981',
-                            'accent-hover': '#059669',
-                            secondary: '#6366F1',
-                            text: '#111827',
-                            muted: '#6B7280',
-                            light: '#F5F5F5',
-                        }
-                    },
-                    fontFamily: {
-                        heading: ['Outfit', 'sans-serif'],
-                        body: ['DM Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
+      // Decide synchronously whether the boot overlay should run, before paint.
+      (function () {
+        try {
+          var hash = window.location.hash;
+          var easter = hash === '#/boot';
+          var seen = false;
+          try { seen = !!localStorage.getItem('ze.boot.seen'); } catch (_) {}
+          var coarse = window.matchMedia('(pointer: coarse)').matches;
+          var small  = window.matchMedia('(max-width: 768px)').matches;
+          var needsBoot = easter || (!seen && !coarse && !small);
+          if (needsBoot) document.documentElement.classList.add('boot-pending');
+        } catch (_) {}
+      })();
     </script>
-    <style>
-        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        body { font-family: 'DM Sans', sans-serif; background: #FAFAFA; color: #111827; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; letter-spacing: -0.03em; }
-        p, li, span, a, label, input, textarea { line-height: 1.7; }
-
-        /* Grain texture overlay */
-        .grain::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        /* Scroll reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(32px);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Button hover spring */
-        .btn-spring {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-        }
-        .btn-spring:hover {
-            transform: translateY(-2px);
-        }
-        .btn-spring:active {
-            transform: translateY(0px);
-        }
-
-        /* Card hover */
-        .card-lift {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-        }
-        .card-lift:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
-        }
-
-        /* Nav link underline */
-        .nav-link {
-            position: relative;
-            transition: color 0.2s ease;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #10B981;
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .nav-link:hover::after { width: 100%; }
-        .nav-link:hover { color: #10B981; }
-
-        /* Green highlight */
-        .green-highlight {
-            background: linear-gradient(120deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.25) 100%);
-            padding: 0 0.15em;
-            border-radius: 4px;
-            color: #059669;
-        }
-
-        /* Hero photo wrap - center on mobile */
-        @media (max-width: 767px) {
-            .hero-photo-wrap {
-                display: flex;
-                justify-content: center;
-                padding: 1rem 0;
-            }
-        }
-
-        /* Tech label colors - boosted opacity for dark bg readability */
-        .tech-react { background: rgba(97, 218, 251, 0.2); color: #67E8F9; border: 1px solid rgba(97, 218, 251, 0.25); }
-        .tech-typescript { background: rgba(49, 120, 198, 0.2); color: #60A5FA; border: 1px solid rgba(49, 120, 198, 0.25); }
-        .tech-csharp { background: rgba(155, 93, 229, 0.2); color: #C084FC; border: 1px solid rgba(155, 93, 229, 0.25); }
-        .tech-node { background: rgba(51, 153, 51, 0.2); color: #4ADE80; border: 1px solid rgba(51, 153, 51, 0.25); }
-        .tech-python { background: rgba(55, 118, 171, 0.2); color: #93C5FD; border: 1px solid rgba(55, 118, 171, 0.25); }
-        .tech-tailwind { background: rgba(6, 182, 212, 0.2); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.25); }
-        .tech-ai { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.25); }
-        .tech-gemini { background: rgba(251, 188, 4, 0.2); color: #FBBF24; border: 1px solid rgba(251, 188, 4, 0.25); }
-        .tech-design { background: rgba(244, 114, 182, 0.2); color: #F472B6; border: 1px solid rgba(244, 114, 182, 0.25); }
-        .tech-client { background: rgba(180, 130, 70, 0.2); color: #D4A054; border: 1px solid rgba(180, 130, 70, 0.25); }
-
-        /* Light-bg variant for project cards */
-        .light .tech-react, .card-light .tech-react { background: rgba(97, 218, 251, 0.12); color: #0891B2; border-color: rgba(97, 218, 251, 0.2); }
-        .card-light .tech-typescript { background: rgba(49, 120, 198, 0.12); color: #2563EB; border-color: rgba(49, 120, 198, 0.2); }
-        .card-light .tech-gemini { background: rgba(251, 188, 4, 0.12); color: #B45309; border-color: rgba(251, 188, 4, 0.2); }
-        .card-light .tech-ai { background: rgba(16, 185, 129, 0.12); color: #059669; border-color: rgba(16, 185, 129, 0.2); }
-        .card-light .tech-design { background: rgba(244, 114, 182, 0.12); color: #DB2777; border-color: rgba(244, 114, 182, 0.2); }
-        .card-light .tech-tailwind { background: rgba(6, 182, 212, 0.12); color: #0891B2; border-color: rgba(6, 182, 212, 0.2); }
-        .card-light .tech-client { background: rgba(180, 130, 70, 0.12); color: #92600A; border-color: rgba(180, 130, 70, 0.2); }
-
-        /* Mobile menu */
-        .mobile-menu {
-            transform: translateY(-100%);
-            visibility: hidden;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
-        }
-        .mobile-menu.open {
-            transform: translateY(0);
-            visibility: visible;
-        }
-
-        /* Focus visible */
-        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
-            outline: 2px solid #10B981;
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
-
-        /* Form inputs */
-        .form-input {
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .form-input:focus {
-            border-color: #10B981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-        }
-
-        /* Navbar scroll */
-        .navbar-scrolled {
-            background: rgba(250, 250, 250, 0.85) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-    </style>
 </head>
-<body class="grain">
+<body>
+    <a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--accent);color:#000;padding:8px 12px;z-index:9999;" onfocus="this.style.left='12px'" onblur="this.style.left='-9999px'">Skip to main content</a>
 
-    <!-- ============ NAV ============ -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50" style="background: #FAFAFA;">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <a href="#" class="font-heading text-2xl tracking-tight" style="color: #111827; font-weight: 800;">
-                Z.E
-            </a>
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#about" class="nav-link font-body text-sm" style="color: #6B7280;">About</a>
-                <a href="#work" class="nav-link font-body text-sm" style="color: #6B7280;">My Work</a>
-                <a href="#contact" class="nav-link font-body text-sm" style="color: #6B7280;">Contact</a>
-                <a href="#contact" class="btn-spring inline-flex items-center px-5 py-2.5 rounded-full text-sm font-medium text-white" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
-                    Get in Touch
-                </a>
-            </div>
-            <!-- Mobile hamburger -->
-            <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
-                <span class="block w-6 h-0.5 bg-gray-800" style="transition: transform 0.3s ease;" id="bar1"></span>
-                <span class="block w-6 h-0.5 bg-gray-800" style="transition: opacity 0.3s ease;" id="bar2"></span>
-                <span class="block w-6 h-0.5 bg-gray-800" style="transition: transform 0.3s ease;" id="bar3"></span>
-            </button>
+    <noscript>
+      <div style="position:fixed;inset:0;z-index:99999;background:#07090A;color:#E8EBED;font-family:'DM Sans',system-ui,sans-serif;line-height:1.6;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <div style="max-width:520px;">
+          <h1 style="font-family:'Outfit',system-ui,sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3rem);letter-spacing:-0.03em;margin:0 0 8px;color:#E8EBED;">Zak Esposito</h1>
+          <p style="margin:0 0 24px;color:#A8B0B5;">Developer &amp; Builder, based in Llanelli, Wales. This site uses JavaScript for its full experience — here are the direct channels:</p>
+          <ul style="list-style:none;padding:0;margin:0;display:grid;gap:12px;">
+            <li><a href="mailto:zak@espositodigital.co.uk" style="color:#10B981;text-decoration:none;border-bottom:1px solid rgba(16,185,129,0.4);">zak@espositodigital.co.uk</a></li>
+            <li><a href="https://github.com/zak-esposito" style="color:#10B981;text-decoration:none;border-bottom:1px solid rgba(16,185,129,0.4);" target="_blank" rel="noopener">github.com/zak-esposito</a></li>
+            <li><a href="https://linkedin.com/in/zakesposito" style="color:#10B981;text-decoration:none;border-bottom:1px solid rgba(16,185,129,0.4);" target="_blank" rel="noopener">linkedin.com/in/zakesposito</a></li>
+          </ul>
         </div>
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-[64px] left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-100 px-6 py-6 flex flex-col gap-4">
-            <a href="#about" class="font-body text-base" style="color: #6B7280;" onclick="closeMobileMenu()">About</a>
-            <a href="#work" class="font-body text-base" style="color: #6B7280;" onclick="closeMobileMenu()">My Work</a>
-            <a href="#contact" class="font-body text-base" style="color: #6B7280;" onclick="closeMobileMenu()">Contact</a>
-            <a href="#contact" class="btn-spring inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium text-white mt-2" style="background: #10B981;" onclick="closeMobileMenu()">
-                Get in Touch
-            </a>
-        </div>
-    </nav>
+      </div>
+    </noscript>
 
+    <!-- SVG icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="icon-helmet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+                <path d="M3.5 14c0-5 4-9 8.5-9s8.5 4 8.5 9v3.5H3.5V14z"/>
+                <path d="M3.5 14h17"/>
+                <path d="M9.5 14v3.5"/>
+                <path d="M6 9.5c1.5-1 3.5-1.5 6-1.5s4.5.5 6 1.5"/>
+            </symbol>
+            <symbol id="icon-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15.5 4a4.5 4.5 0 0 0-4.4 5.5l-7 7a2 2 0 0 0 0 2.8l.6.6a2 2 0 0 0 2.8 0l7-7A4.5 4.5 0 1 0 15.5 4z"/>
+                <circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/>
+            </symbol>
+            <symbol id="icon-speedo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.5 17.5a8.5 8.5 0 1 1 17 0"/>
+                <path d="M12 17.5L17 9.5"/>
+                <circle cx="12" cy="17.5" r="1.4" fill="currentColor"/>
+                <path d="M6 17.5h0.5M17.5 17.5h0.5M12 9.5v0.5"/>
+            </symbol>
+            <symbol id="icon-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="3" width="6" height="11" rx="3"/>
+                <path d="M6 12a6 6 0 0 0 12 0"/>
+                <path d="M12 18v3"/>
+                <path d="M9 21h6"/>
+            </symbol>
+            <symbol id="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h13M13 6l6 6-6 6"/>
+            </symbol>
+            <symbol id="icon-arrow-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M11 6l-6 6 6 6"/>
+            </symbol>
+            <symbol id="icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/>
+                <path d="M16 9.2c1 0.9 1.6 2 1.6 2.8s-0.6 1.9-1.6 2.8"/>
+                <path d="M18.6 6.6c1.9 1.6 2.9 3.4 2.9 5.4s-1 3.8-2.9 5.4"/>
+            </symbol>
+            <symbol id="icon-volume-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4z"/>
+                <path d="M17 9l5 6M22 9l-5 6"/>
+            </symbol>
+        </defs>
+    </svg>
 
-    <!-- ============ HERO ============ -->
-    <section class="md:min-h-screen flex items-center pt-20 pb-8 md:pt-24 md:pb-16 overflow-x-clip" style="background: #FAFAFA;">
-        <div class="max-w-6xl mx-auto px-6 w-full">
-            <div class="flex flex-col md:flex-row items-center gap-6 md:gap-16 lg:gap-20">
-                <!-- Text side (LEFT on desktop) -->
-                <div class="flex-1 text-center md:text-left order-1 md:order-1">
-                    <p class="reveal font-body text-lg mb-4" style="color: #6B7280;">Hello! I'm</p>
-                    <h1 class="reveal font-heading text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-5" style="font-weight: 800; color: #111827; line-height: 1.05;">
-                        <span class="green-highlight">Zak Esposito</span>
-                    </h1>
-                    <p class="reveal font-heading text-xl sm:text-2xl mb-6 md:mb-10" style="color: #6B7280; font-weight: 500;">
-                        I build things that work.
-                    </p>
-                    <div class="reveal">
-                        <a href="#work" class="btn-spring inline-flex items-center gap-2 px-6 py-3 md:px-9 md:py-4 rounded-full text-base md:text-lg font-semibold text-white" style="background: #10B981; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); font-family: 'Outfit', sans-serif;">
-                            View My Work
-                            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" class="ml-1"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </a>
+    <!-- Boot overlay: covers the menu during the first-visit intro. Hidden via CSS
+         when html.boot-pending is absent (return visitors, mobile, reduced-motion). -->
+    <div id="boot-overlay" role="dialog" aria-label="Boot sequence">
+      <span class="boot-overlay__bracket boot-overlay__bracket--tl" aria-hidden="true"></span>
+      <span class="boot-overlay__bracket boot-overlay__bracket--tr" aria-hidden="true"></span>
+      <span class="boot-overlay__bracket boot-overlay__bracket--bl" aria-hidden="true"></span>
+      <span class="boot-overlay__bracket boot-overlay__bracket--br" aria-hidden="true"></span>
+      <div class="boot-overlay__scanline" aria-hidden="true"></div>
+
+      <div class="boot-overlay__inner">
+        <span class="boot-overlay__eyebrow">System Boot &middot; v1.0</span>
+        <h1 class="boot-overlay__logo">ZAK ESPOSITO</h1>
+        <span class="boot-overlay__accent" aria-hidden="true"></span>
+        <p class="boot-overlay__press">
+          <span class="boot-overlay__press-dot" aria-hidden="true"></span>
+          Press Start
+        </p>
+      </div>
+
+      <button class="boot-overlay__skip" data-boot-skip type="button" aria-label="Skip intro">
+        Skip
+        <svg aria-hidden="true"><use href="#icon-arrow"/></svg>
+      </button>
+    </div>
+
+    <!-- HUD frame at viewport edges -->
+    <div class="hud-frame" aria-hidden="true">
+        <span class="hud-frame__corner hud-frame__corner--tl"></span>
+        <span class="hud-frame__corner hud-frame__corner--tr"></span>
+        <span class="hud-frame__corner hud-frame__corner--bl"></span>
+        <span class="hud-frame__corner hud-frame__corner--br"></span>
+    </div>
+
+    <div class="app">
+        <header class="hud-top">
+            <div class="hud-top__panel hud-top__panel--menu">
+                <div class="hud-top__brand">
+                    <div class="hud-top__brand-mark">ZE</div>
+                    <div class="hud-top__brand-text">
+                        <strong>Zak Esposito</strong>
+                        <span>Llanelli · Wales</span>
                     </div>
                 </div>
-                <!-- Photo side (RIGHT on desktop) -->
-                <div class="flex-shrink-0 order-2 md:order-2 reveal hero-photo-wrap">
-                    <div class="w-56 h-56 sm:w-72 sm:h-72 lg:w-[300px] lg:h-[300px] rounded-full overflow-hidden border-4" style="border-color: #10B981;">
-                        <img src="brand_assets/DSC_3302.webp" alt="Zak Esposito, freelance web developer in Llanelli, Wales" class="w-full h-full object-cover object-top" width="853" height="1280">
-                    </div>
+                <div class="hud-top__meta">
+                    <span class="hud-top__meta-item hud-top__meta-item--live">System Online</span>
+                    <span class="hud-top__meta-item">Build 1.0</span>
+                    <span class="hud-top__meta-item">2026</span>
                 </div>
             </div>
-        </div>
-    </section>
-
-
-    <!-- ============ VALUE PROP ============ -->
-    <section class="py-12 md:py-32" style="background: #FAFAFA;">
-        <div class="max-w-3xl mx-auto px-6 text-center">
-            <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl mb-6" style="font-weight: 700; color: #111827; line-height: 1.15;">
-                Your business deserves a proper website.
-            </h2>
-            <p class="reveal font-body text-lg" style="color: #6B7280;">
-                Whether you're a local business needing a website or a founder with an idea, I'll build it properly. On time, on budget, no agency runaround.
-            </p>
-        </div>
-    </section>
-
-
-    <!-- ============ ABOUT (DARK) ============ -->
-    <section id="about" class="py-14 md:py-32" style="background: #0A0A0A;">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl mb-2" style="font-weight: 700; color: #F5F5F5; line-height: 1.15;">
-                    A bit about <span style="color: #10B981;">me</span>.
-                </h2>
-            </div>
-            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
-                <!-- Text side -->
-                <div class="flex-1 order-2 md:order-1">
-                    <p class="reveal font-body text-base mb-5" style="color: #D1D5DB; line-height: 1.8;">
-                        I'm Zak Esposito, a final-year Computer Science student at Cardiff University, on track for a First. I spent a year at Renishaw as a software engineer, building production-critical tools used on real manufacturing lines. I placed 2nd in the Airbus Cyber Security CTF. Now I build websites, web apps, and AI-powered tools for businesses.
-                    </p>
-                    <p class="reveal font-body text-base mb-8" style="color: #D1D5DB; line-height: 1.8;">
-                        I work with React, TypeScript, C#, Node.js and modern AI tooling. I care about clean design, strong performance, and software that actually solves problems. Not just looks good in a demo.
-                    </p>
-                    <div class="reveal flex flex-wrap gap-2.5">
-                        <span class="tech-react inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">React</span>
-                        <span class="tech-typescript inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">TypeScript</span>
-                        <span class="tech-csharp inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">C#</span>
-                        <span class="tech-node inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">Node.js</span>
-                        <span class="tech-python inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">Python</span>
-                        <span class="tech-tailwind inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">Tailwind CSS</span>
-                        <span class="tech-ai inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium font-body">AI / LLMs</span>
-                    </div>
-                </div>
-                <!-- Photo side -->
-                <div class="flex-shrink-0 order-1 md:order-2 reveal">
-                    <div class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80">
-                        <div class="absolute -inset-2 rounded-2xl" style="background: linear-gradient(135deg, #10B981, #059669); transform: rotate(3deg);"></div>
-                        <img src="brand_assets/about-photo.webp" alt="Zak Esposito at Porthcawl 10K race" class="relative z-10 w-full h-full object-cover rounded-2xl" width="1200" height="1600" loading="lazy">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ============ MY WORK ============ -->
-    <section id="work" class="py-14 md:py-32" style="background: #FAFAFA;">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl" style="font-weight: 700; color: #111827; line-height: 1.15;">
-                    My Work
-                </h2>
-                <p class="reveal font-body text-base mt-4" style="color: #6B7280;">Things I've built.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Card 1: GradeMyRun -->
-                <a href="https://grademyrun.com" target="_blank" rel="noopener noreferrer" class="reveal card-lift card-light bg-white rounded-2xl overflow-hidden block" style="box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03); text-decoration: none; color: inherit;">
-                    <div class="p-4 pb-0">
-                        <div class="rounded-xl overflow-hidden">
-                            <img src="brand_assets/grademyrun-hero.webp" alt="GradeMyRun free 5K age-grading calculator" class="w-full aspect-video object-cover" width="1902" height="944" loading="lazy">
-                        </div>
-                    </div>
-                    <div class="p-5 sm:p-6 pt-4 sm:pt-5">
-                        <h3 class="font-heading text-lg sm:text-xl mb-2" style="font-weight: 700; color: #111827;">GradeMyRun</h3>
-                        <p class="font-body text-sm mb-4" style="color: #6B7280;">Free 5K age-grading calculator with shareable tier cards. Enter your time, age and sex, get an age-graded percentage, a tier ranking from Starter to Diamond, and a downloadable performance card. Built for the 1M+ weekly UK parkrun community. Live at grademyrun.com.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="tech-react px-2.5 py-1 rounded-full text-xs font-medium">React</span>
-                            <span class="tech-typescript px-2.5 py-1 rounded-full text-xs font-medium">TypeScript</span>
-                            <span class="tech-tailwind px-2.5 py-1 rounded-full text-xs font-medium">Tailwind CSS</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Card 2: Snap2Shop -->
-                <div class="reveal card-lift card-light bg-white rounded-2xl overflow-hidden" style="box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);">
-                    <div class="p-4 pb-0">
-                        <div class="rounded-xl overflow-hidden">
-                            <img src="brand_assets/snap2shop-screenshot.webp" alt="Snap2Shop AI product identification app" class="w-full aspect-video object-cover" width="600" height="400" loading="lazy">
-                        </div>
-                    </div>
-                    <div class="p-5 sm:p-6 pt-4 sm:pt-5">
-                        <h3 class="font-heading text-lg sm:text-xl mb-2" style="font-weight: 700; color: #111827;">Snap2Shop</h3>
-                        <p class="font-body text-sm mb-4" style="color: #6B7280;">AI-powered product identification app. Upload a photo and get real retailer links instantly. Built with React, TypeScript, and Google Gemini.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="tech-react px-2.5 py-1 rounded-full text-xs font-medium">React</span>
-                            <span class="tech-typescript px-2.5 py-1 rounded-full text-xs font-medium">TypeScript</span>
-                            <span class="tech-gemini px-2.5 py-1 rounded-full text-xs font-medium">Gemini AI</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: VentureForge -->
-                <a href="https://github.com/zak-esposito/venture-forge" target="_blank" rel="noopener noreferrer" class="reveal card-lift card-light bg-white rounded-2xl overflow-hidden block" style="box-shadow: 0 4px 20px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03); text-decoration: none; color: inherit;">
-                    <div class="p-4 pb-0">
-                        <div class="rounded-xl overflow-hidden">
-                            <img src="brand_assets/ventureforge-screenshot.webp" alt="VentureForge AI startup validation tool" class="w-full aspect-video object-cover" width="600" height="400" loading="lazy">
-                        </div>
-                    </div>
-                    <div class="p-5 sm:p-6 pt-4 sm:pt-5">
-                        <h3 class="font-heading text-lg sm:text-xl mb-2" style="font-weight: 700; color: #111827;">VentureForge</h3>
-                        <p class="font-body text-sm mb-4" style="color: #6B7280;">AI-powered R&D lab for solo founders. Validate startup ideas with deep reasoning, real-time market research, and technical architecture generation.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="tech-react px-2.5 py-1 rounded-full text-xs font-medium">React</span>
-                            <span class="tech-typescript px-2.5 py-1 rounded-full text-xs font-medium">TypeScript</span>
-                            <span class="tech-gemini px-2.5 py-1 rounded-full text-xs font-medium">Gemini AI</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ============ CONTACT ============ -->
-    <section id="contact" class="py-14 md:py-32" style="background: #FFFFFF;">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="reveal font-heading text-3xl sm:text-4xl md:text-5xl mb-4" style="font-weight: 700; color: #111827; line-height: 1.15;">
-                    Got a project in mind?
-                </h2>
-                <p class="reveal font-body text-lg" style="color: #6B7280;">
-                    Drop me an email at <a href="mailto:zakesposito03@gmail.com" class="font-medium" style="color: #10B981; text-decoration: underline; text-underline-offset: 3px;">zakesposito03@gmail.com</a> or use the form below.
-                </p>
-            </div>
-            <form id="contact-form" class="reveal max-w-lg mx-auto space-y-5" action="https://formsubmit.co/ajax/747531c8f02f2af970e5918b56eb4f3f" method="POST">
-                <input type="hidden" name="_subject" value="New enquiry from zakesposito.dev">
-                <input type="hidden" name="_captcha" value="false">
-                <div>
-                    <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Name</label>
-                    <input type="text" name="name" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Your name">
-                </div>
-                <div>
-                    <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Email</label>
-                    <input type="email" name="email" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="you@example.com">
-                </div>
-                <div>
-                    <label class="block font-body text-sm font-medium mb-1.5" style="color: #374151;">Message</label>
-                    <textarea rows="5" name="message" required class="form-input w-full px-4 py-3 rounded-xl border font-body text-sm resize-none" style="border-color: #E5E7EB; background: #FAFAFA; color: #111827; outline: none;" placeholder="Tell me about your project..."></textarea>
-                </div>
-                <button type="submit" id="contact-submit" class="btn-spring w-full py-3.5 rounded-xl text-white font-medium font-body text-sm" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
-                    Send Message
+            <div class="hud-top__panel hud-top__panel--scene" hidden>
+                <button class="back-btn" data-back type="button" aria-label="Return to main menu">
+                    <svg class="back-btn__arrow" aria-hidden="true"><use href="#icon-arrow-back"/></svg>
+                    <span class="back-btn__label">Main Menu</span>
                 </button>
-            </form>
-            <div id="form-success" class="hidden max-w-lg mx-auto text-center py-12">
-                <svg class="mx-auto mb-4" width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="#10B981"/><path d="M14 25l7 7 13-13" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <p class="font-body text-lg font-medium" style="color: #111827;">Thanks! I'll get back to you soon.</p>
+                <div class="hud-top__mode">
+                    <span class="hud-top__mode-tag">Mode</span>
+                    <span class="hud-top__mode-name" data-mode-name>—</span>
+                </div>
             </div>
-            <div id="form-error" class="hidden max-w-lg mx-auto text-center py-4">
-                <p class="font-body text-sm" style="color: #EF4444;">Something went wrong. Try emailing me directly at <a href="mailto:zakesposito03@gmail.com" class="underline" style="color: #EF4444;">zakesposito03@gmail.com</a></p>
+            <button class="mute-btn" data-mute type="button" aria-pressed="false" aria-label="Mute audio" title="Mute audio">
+                <svg class="mute-btn__icon" aria-hidden="true"><use href="#icon-volume"/></svg>
+            </button>
+        </header>
+
+        <div class="sr-only" role="status" aria-live="polite" data-route-announce></div>
+
+        <main class="view-root" id="main" data-view-root>
+            <section class="menu" data-view="menu" aria-label="Main menu">
+            <div class="menu__header">
+                <span class="menu__eyebrow">Main Menu</span>
+                <h1 class="menu__title">Select <em>Mode</em></h1>
             </div>
-            <div class="reveal flex items-center justify-center gap-6 mt-10">
-                <a href="https://github.com/zak-esposito" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 font-body text-sm" style="color: #6B7280; transition: color 0.2s ease;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#6B7280'">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub
+
+            <div class="tile-grid" role="menu" aria-label="Main navigation">
+                <a href="#/career" class="tile" role="menuitem" data-mode="career">
+                    <span class="tile__corner tile__corner--tl"></span>
+                    <span class="tile__corner tile__corner--tr"></span>
+                    <span class="tile__corner tile__corner--bl"></span>
+                    <span class="tile__corner tile__corner--br"></span>
+                    <div class="tile__watermark"><svg><use href="#icon-helmet"/></svg></div>
+
+                    <div class="tile__header">
+                        <span class="tile__index"><strong>00</strong>Mode</span>
+                        <svg class="tile__icon"><use href="#icon-helmet"/></svg>
+                    </div>
+                    <div class="tile__body">
+                        <h2 class="tile__title">Career</h2>
+                        <p class="tile__tagline">The driver behind the wheel.</p>
+                    </div>
+                    <div class="tile__footer">
+                        <span class="tile__action">Enter <svg><use href="#icon-arrow"/></svg></span>
+                        <span class="tile__route">/career</span>
+                    </div>
                 </a>
-                <a href="https://www.linkedin.com/in/zakesposito" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 font-body text-sm" style="color: #6B7280; transition: color 0.2s ease;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#6B7280'">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    LinkedIn
+
+                <a href="#/garage" class="tile" role="menuitem" data-mode="garage">
+                    <span class="tile__corner tile__corner--tl"></span>
+                    <span class="tile__corner tile__corner--tr"></span>
+                    <span class="tile__corner tile__corner--bl"></span>
+                    <span class="tile__corner tile__corner--br"></span>
+                    <div class="tile__watermark"><svg><use href="#icon-wrench"/></svg></div>
+
+                    <div class="tile__header">
+                        <span class="tile__index"><strong>01</strong>Mode</span>
+                        <svg class="tile__icon"><use href="#icon-wrench"/></svg>
+                    </div>
+                    <div class="tile__body">
+                        <h2 class="tile__title">Garage</h2>
+                        <p class="tile__tagline">Four projects, four builds.</p>
+                    </div>
+                    <div class="tile__footer">
+                        <span class="tile__action">Enter <svg><use href="#icon-arrow"/></svg></span>
+                        <span class="tile__route">/garage</span>
+                    </div>
+                </a>
+
+                <a href="#/timetrial" class="tile" role="menuitem" data-mode="timetrial">
+                    <span class="tile__corner tile__corner--tl"></span>
+                    <span class="tile__corner tile__corner--tr"></span>
+                    <span class="tile__corner tile__corner--bl"></span>
+                    <span class="tile__corner tile__corner--br"></span>
+                    <div class="tile__watermark"><svg><use href="#icon-speedo"/></svg></div>
+
+                    <div class="tile__header">
+                        <span class="tile__index"><strong>02</strong>Mode</span>
+                        <svg class="tile__icon"><use href="#icon-speedo"/></svg>
+                    </div>
+                    <div class="tile__body">
+                        <h2 class="tile__title">Time Trial</h2>
+                        <p class="tile__tagline">Take GradeMyRun for a lap.</p>
+                    </div>
+                    <div class="tile__footer">
+                        <span class="tile__action">Enter <svg><use href="#icon-arrow"/></svg></span>
+                        <span class="tile__route">/timetrial</span>
+                    </div>
+                </a>
+
+                <a href="#/radio" class="tile" role="menuitem" data-mode="radio">
+                    <span class="tile__corner tile__corner--tl"></span>
+                    <span class="tile__corner tile__corner--tr"></span>
+                    <span class="tile__corner tile__corner--bl"></span>
+                    <span class="tile__corner tile__corner--br"></span>
+                    <div class="tile__watermark"><svg><use href="#icon-mic"/></svg></div>
+
+                    <div class="tile__header">
+                        <span class="tile__index"><strong>03</strong>Mode</span>
+                        <svg class="tile__icon"><use href="#icon-mic"/></svg>
+                    </div>
+                    <div class="tile__body">
+                        <h2 class="tile__title">Pit Radio</h2>
+                        <p class="tile__tagline">Open the channel.</p>
+                    </div>
+                    <div class="tile__footer">
+                        <span class="tile__action">Enter <svg><use href="#icon-arrow"/></svg></span>
+                        <span class="tile__route">/radio</span>
+                    </div>
                 </a>
             </div>
-        </div>
-    </section>
+            </section>
+            <div class="scene-container" data-scene-container hidden></div>
+        </main>
 
+        <footer class="hud-bottom">
+            <div class="hud-bottom__telemetry">
+                <span>Lat <strong>51.6840°N</strong></span>
+                <span>Lon <strong>4.1620°W</strong></span>
+                <span>Sector <strong>UK · GB</strong></span>
+            </div>
+            <div class="hud-bottom__hint hud-bottom__hint--menu">
+                <span>Use</span>
+                <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd>
+                <span>to navigate</span>
+            </div>
+            <div class="hud-bottom__hint hud-bottom__hint--scene">
+                <kbd>ESC</kbd>
+                <span>to return</span>
+            </div>
+        </footer>
+    </div>
 
-    <!-- ============ FOOTER ============ -->
-    <footer class="py-10" style="background: #FAFAFA; border-top: 1px solid #E5E7EB;">
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <p class="font-body text-sm" style="color: #6B7280;">&copy; 2026 Zak Esposito. All rights reserved.</p>
-            <p class="font-body text-xs mt-2" style="color: #9CA3AF;">Ship fast. Learn constantly. Build what matters.</p>
-        </div>
-    </footer>
-
-
-    <!-- ============ SCRIPTS ============ -->
-    <script>
-        // Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 80);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        reveals.forEach(el => observer.observe(el));
-
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-            }
-        });
-
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const bar1 = document.getElementById('bar1');
-        const bar2 = document.getElementById('bar2');
-        const bar3 = document.getElementById('bar3');
-        let menuOpen = false;
-
-        menuToggle.addEventListener('click', () => {
-            menuOpen = !menuOpen;
-            mobileMenu.classList.toggle('open');
-            if (menuOpen) {
-                bar1.style.transform = 'rotate(45deg) translate(4px, 4px)';
-                bar2.style.opacity = '0';
-                bar3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
-            } else {
-                bar1.style.transform = '';
-                bar2.style.opacity = '1';
-                bar3.style.transform = '';
-            }
-        });
-
-        function closeMobileMenu() {
-            menuOpen = false;
-            mobileMenu.classList.remove('open');
-            bar1.style.transform = '';
-            bar2.style.opacity = '1';
-            bar3.style.transform = '';
-        }
-
-        // Contact form ajax submit
-        const contactForm = document.getElementById('contact-form');
-        const submitBtn = document.getElementById('contact-submit');
-        const formSuccess = document.getElementById('form-success');
-        const formError = document.getElementById('form-error');
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sending...';
-            formError.classList.add('hidden');
-
-            try {
-                const res = await fetch(contactForm.action, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(Object.fromEntries(new FormData(contactForm)))
-                });
-                if (res.ok) {
-                    contactForm.classList.add('hidden');
-                    formSuccess.classList.remove('hidden');
-                } else {
-                    throw new Error('Submit failed');
-                }
-            } catch {
-                formError.classList.remove('hidden');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Send Message';
-            }
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
+    <script type="module" src="js/main.js"></script>
     <script defer src="https://va.vercel-scripts.com/v1/speed-insights/script.js"></script>
     <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
 </body>

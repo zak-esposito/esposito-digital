@@ -1,0 +1,309 @@
+/* Pre-paint hide for tiles when boot will run, applied by inline <script>.
+   Prevents flash before js/boot.js executes. */
+html.boot-pending .tile {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(30px);
+  transition: none !important;
+}
+html:not(.boot-pending) #boot-overlay { display: none; }
+
+/* --- Overlay shell --- */
+#boot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bg-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 200ms var(--ease-smooth);
+}
+
+#boot-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(16, 185, 129, 0.05), transparent 60%),
+    radial-gradient(ellipse 120% 80% at 50% 120%, rgba(0, 0, 0, 0.55), transparent 55%);
+}
+
+#boot-overlay::after {
+  /* CRT-ish horizontal lines, very subtle */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.02) 3px,
+    transparent 4px
+  );
+  opacity: 0.6;
+}
+
+/* Scanline sweep */
+.boot-overlay__scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-100%);
+  background: linear-gradient(180deg,
+    transparent 0%,
+    transparent 46%,
+    rgba(255, 255, 255, 0.04) 48%,
+    rgba(232, 235, 237, 0.9) 50%,
+    rgba(16, 185, 129, 0.35) 50.5%,
+    rgba(255, 255, 255, 0.04) 52%,
+    transparent 54%,
+    transparent 100%);
+  mix-blend-mode: screen;
+}
+#boot-overlay.boot-overlay--phase1 .boot-overlay__scanline {
+  animation: boot-scanline 300ms 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes boot-scanline {
+  0%   { opacity: 0;   transform: translateY(-100%); }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { opacity: 0;   transform: translateY(100%); }
+}
+
+/* Center content */
+.boot-overlay__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transition: opacity 200ms var(--ease-smooth), transform 200ms var(--ease-smooth);
+}
+
+.boot-overlay__eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-mono-xs);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.boot-overlay__eyebrow::before,
+.boot-overlay__eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--accent-dim);
+}
+#boot-overlay.boot-overlay--phase1 .boot-overlay__eyebrow {
+  animation: boot-fade-in 300ms 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.boot-overlay__logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.5rem, 7vw, 5.25rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+  opacity: 0;
+  line-height: 1;
+}
+#boot-overlay.boot-overlay--phase1 .boot-overlay__logo {
+  animation: boot-logo-in 400ms 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes boot-logo-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Green accent line, drawn left→right */
+.boot-overlay__accent {
+  width: 140px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-dim);
+  transform: scaleX(0);
+  transform-origin: left center;
+  margin-top: 6px;
+}
+#boot-overlay.boot-overlay--phase1 .boot-overlay__accent {
+  animation: boot-accent-in 300ms 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes boot-accent-in {
+  to { transform: scaleX(1); }
+}
+
+/* PRESS START */
+.boot-overlay__press {
+  margin-top: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-mono-sm);
+  letter-spacing: 0.42em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  opacity: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.boot-overlay__press-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  display: inline-block;
+}
+#boot-overlay.boot-overlay--phase1 .boot-overlay__press {
+  animation:
+    boot-fade-in 200ms 1400ms cubic-bezier(0.22, 1, 0.36, 1) both,
+    boot-press-pulse 1.4s 1600ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+@keyframes boot-press-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@keyframes boot-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Skip button — bottom right */
+.boot-overlay__skip {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-mono-xs);
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-hairline);
+  padding: 10px 16px;
+  text-transform: uppercase;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 3;
+  transition:
+    color 200ms var(--ease-smooth),
+    border-color 200ms var(--ease-smooth),
+    background 200ms var(--ease-smooth);
+}
+.boot-overlay__skip svg {
+  width: 12px;
+  height: 12px;
+}
+#boot-overlay.boot-overlay--phase1 .boot-overlay__skip {
+  animation: boot-fade-in 220ms 1400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.boot-overlay__skip:hover,
+.boot-overlay__skip:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  background: rgba(16, 185, 129, 0.04);
+  outline: none;
+}
+
+/* Corner brackets inside overlay (small decoration) */
+.boot-overlay__bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--accent-dim);
+  opacity: 0;
+}
+.boot-overlay__bracket--tl { top: 40px; left: 40px; border-right: none; border-bottom: none; }
+.boot-overlay__bracket--tr { top: 40px; right: 40px; border-left: none; border-bottom: none; }
+.boot-overlay__bracket--bl { bottom: 40px; left: 40px; border-right: none; border-top: none; }
+.boot-overlay__bracket--br { bottom: 40px; right: 40px; border-left: none; border-top: none; }
+#boot-overlay.boot-overlay--phase1 .boot-overlay__bracket {
+  animation: boot-fade-in 400ms 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Exit */
+#boot-overlay.boot-overlay--exit {
+  opacity: 0;
+  pointer-events: none;
+}
+#boot-overlay.boot-overlay--exit .boot-overlay__inner {
+  transform: translateY(-12px);
+  opacity: 0;
+}
+
+/* --- Tile cascade --- */
+body.is-booting .tile {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(30px);
+  transition: none;
+}
+
+body.boot-cascading .tile {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(30px);
+  transition:
+    opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+body.boot-cascading .tile.boot-tile-enter {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* --- Quick reveal for return visitors / mobile --- */
+body.boot-quick .tile {
+  animation: boot-tiles-quick 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes boot-tiles-quick {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Instant (reduced motion) --- */
+body.boot-instant .tile {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .boot-overlay__skip   { right: 20px; bottom: 20px; padding: 8px 12px; }
+  .boot-overlay__accent { width: 90px; }
+  .boot-overlay__bracket--tl,
+  .boot-overlay__bracket--tr { top: 20px; }
+  .boot-overlay__bracket--bl,
+  .boot-overlay__bracket--br { bottom: 20px; }
+  .boot-overlay__bracket--tl,
+  .boot-overlay__bracket--bl { left: 20px; }
+  .boot-overlay__bracket--tr,
+  .boot-overlay__bracket--br { right: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #boot-overlay,
+  #boot-overlay * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

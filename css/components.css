@@ -1,0 +1,153 @@
+/* Back button (scene chrome) */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-mono-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease-smooth),
+    border-color 200ms var(--ease-smooth),
+    background 200ms var(--ease-smooth),
+    transform 220ms var(--ease-spring);
+}
+.back-btn:hover {
+  color: var(--accent);
+  border-color: var(--border-bright);
+  background: var(--bg-tile-hover);
+}
+.back-btn:focus-visible {
+  outline: none;
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 18px var(--accent-glow);
+}
+.back-btn:active {
+  transform: translateX(-2px);
+}
+.back-btn__arrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 220ms var(--ease-smooth);
+}
+.back-btn:hover .back-btn__arrow {
+  transform: translateX(-3px);
+}
+
+/* HUD top mode display (scene side) */
+.hud-top__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-mono-sm);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.hud-top__mode-tag {
+  color: var(--text-muted);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: 0.28em;
+}
+.hud-top__mode-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.hud-top__mode-name::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* HUD top panel: each panel is its own flex row inside the hud-top.
+   Sits next to the persistent mute button via .hud-top's space-between. */
+.hud-top__panel {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-width: 0;
+}
+.hud-top__panel[hidden] {
+  display: none;
+}
+
+/* Mute toggle (persistent HUD chrome) */
+.mute-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: 24px;
+  flex-shrink: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease-smooth),
+    border-color 200ms var(--ease-smooth),
+    background 200ms var(--ease-smooth);
+}
+.mute-btn:hover {
+  color: var(--accent);
+  border-color: var(--border-bright);
+  background: var(--bg-tile-hover);
+}
+.mute-btn:focus-visible {
+  outline: none;
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 18px var(--accent-glow);
+}
+.mute-btn[aria-pressed="true"] {
+  color: var(--text-dim);
+  border-style: dashed;
+}
+.mute-btn[aria-pressed="true"]:hover {
+  color: var(--accent);
+  border-style: solid;
+}
+.mute-btn__icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* HUD bottom hint variants */
+.hud-bottom__hint {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--text-muted);
+}
+.hud-bottom__hint--scene { display: none; }
+body.is-scene .hud-bottom__hint--menu { display: none; }
+body.is-scene .hud-bottom__hint--scene { display: flex; }
+
+@media (max-width: 768px) {
+  .back-btn__label { display: none; }
+  .back-btn { padding: 0; width: 44px; height: 44px; justify-content: center; }
+  .back-btn__arrow { width: 18px; height: 18px; }
+  .hud-top__mode-tag { display: none; }
+  .mute-btn { margin-left: 12px; width: 44px; height: 44px; }
+  .mute-btn__icon { width: 20px; height: 20px; }
+  /* Both hint variants are replaced by the back button + tile tap on mobile. */
+  .hud-bottom__hint--scene,
+  body.is-scene .hud-bottom__hint--scene { display: none; }
+}
